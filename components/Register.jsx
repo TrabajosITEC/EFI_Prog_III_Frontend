@@ -9,10 +9,10 @@ import { Card } from 'primereact/card';
 import { Divider } from 'primereact/divider';
 import * as Yup from 'yup';
 
-const API =  import.meta.env.VITE_API;
+const API = import.meta.env.VITE_API;
 
 export default function FormRegister() {
-   
+
     const [status, setStatus] = useState(null);
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
@@ -29,18 +29,18 @@ export default function FormRegister() {
                     return trimmedValue.length >= 3 && trimmedValue.length <= 15;
                 }
             ),
-            // .test(
-            //     'checkUser',
-            //     'El nombre de usuario ya se encuentra registrado',
-            //     function(value) {
-            //         const ListadoUsuarios = usuariosRegistrados.map( usuario => usuario.user);
-            //         if (ListadoUsuarios.includes(value)){
-            //             return false
-            //         } else {
-            //             return true
-            //         }           
-            //     }
-            // ),
+        // .test(
+        //     'checkUser',
+        //     'El nombre de usuario ya se encuentra registrado',
+        //     function(value) {
+        //         const ListadoUsuarios = usuariosRegistrados.map( usuario => usuario.user);
+        //         if (ListadoUsuarios.includes(value)){
+        //             return false
+        //         } else {
+        //             return true
+        //         }           
+        //     }
+        // ),
         passWord: Yup.string()
             .matches(
                 /^(?=.*[A-Z])(?=.*\d).{1,8}$/,
@@ -49,18 +49,18 @@ export default function FormRegister() {
             .required('La contraseña es obligatoria'),
         email: Yup.string().email('Correo electrónico inválido')
             .required('Requerido')
-            // .test(
-            //     'checkMail',
-            //     'El correo electronico esta vinculado a otro usuario',
-            //     function(value) {
-            //         const ListadoUsuarios = usuariosRegistrados.map( usuario => usuario.email);
-            //         if (ListadoUsuarios.includes(value)){
-            //             return false
-            //         } else {
-            //             return true
-            //         }           
-            //     }
-            // ),
+        // .test(
+        //     'checkMail',
+        //     'El correo electronico esta vinculado a otro usuario',
+        //     function(value) {
+        //         const ListadoUsuarios = usuariosRegistrados.map( usuario => usuario.email);
+        //         if (ListadoUsuarios.includes(value)){
+        //             return false
+        //         } else {
+        //             return true
+        //         }           
+        //     }
+        // ),
     });
 
     return (
@@ -73,34 +73,35 @@ export default function FormRegister() {
                         userName: '',
                         passWord: '',
                         email: '',
+                        role: 'gamer',
                     }}
                     validationSchema={SignupSchema}
                     onSubmit={(values, { setSubmitting, setStatus }) => {
                         setLoading(true);
                         setStatus(null); // Limpiar cualquier estado previo
-                        
+
                         (async () => {
                             try {
                                 console.log("Intentando registrar con los valores:", values);
-                                
-                                const response = await fetch(`${API}/register`, { 
+
+                                const response = await fetch(`${API}/user`, {
                                     method: "POST",
                                     headers: {
                                         "Content-Type": "application/json",
                                     },
                                     body: JSON.stringify(values),
                                 });
-                                
+
                                 console.log("Estado de la respuesta:", response.status);
-                                
+
                                 if (!response.ok) {
                                     const errorData = await response.json();
                                     throw new Error(errorData.message || "Error en el registro");
                                 }
-                                
+
                                 const userData = await response.json();
                                 console.log("Registro exitoso. Datos del usuario:", userData);
-                                
+
                                 // Navegar a la página de inicio con los datos del usuario
                                 navigate("/home", { state: { userActive: userData } });
                             } catch (error) {
@@ -112,21 +113,21 @@ export default function FormRegister() {
                             }
                         })();
                     }}
-                    // onSubmit={(values, { setSubmitting }) => {
-                    //     setLoading(true);
-                    //     setTimeout( async () => {
-                    //         setLoading(false);
-                    //         setSubmitting(false);                
-                    //         await fetch(`${API}/register`, { 
-                    //             method: "POST",
-                    //             headers: {
-                    //               "Content-Type": "application/json",
-                    //             },
-                    //             body: JSON.stringify(values),
-                    //           });
-                    //         navigate("/home");
-                    //     }, 2000);
-                    // }}
+                // onSubmit={(values, { setSubmitting }) => {
+                //     setLoading(true);
+                //     setTimeout( async () => {
+                //         setLoading(false);
+                //         setSubmitting(false);                
+                //         await fetch(`${API}/user`, { 
+                //             method: "POST",
+                //             headers: {
+                //               "Content-Type": "application/json",
+                //             },
+                //             body: JSON.stringify(values),
+                //           });
+                //         navigate("/home");
+                //     }, 2000);
+                // }}
                 >
                     {({ values, errors, touched, handleChange, handleBlur, isSubmitting, handleSubmit }) => (
                         <Form>
@@ -154,10 +155,10 @@ export default function FormRegister() {
                                         toggleMask
                                         className={errors.passWord && touched.passWord ? 'p-invalid w-full' : 'w-full'}
                                         feedback={true}
-                                        promptLabel = "Ingrese una contraseña"
-                                        strongLabel = "Seguridad Fuerte"
-                                        mediumLabel = "Seguridad Media"
-                                        weakLabel = "Seguridad Baja"
+                                        promptLabel="Ingrese una contraseña"
+                                        strongLabel="Seguridad Fuerte"
+                                        mediumLabel="Seguridad Media"
+                                        weakLabel="Seguridad Baja"
                                     />
                                     <label htmlFor="passWord">Contraseña</label>
                                 </span>
