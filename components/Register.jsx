@@ -1,6 +1,7 @@
 import { Formik, Form } from 'formik';
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from 'react-router-dom';
+import { ModeContext } from "../contexts/MainContext";
 import { InputText } from "primereact/inputtext";
 import { Password } from "primereact/password";
 import { Message } from 'primereact/message';
@@ -13,6 +14,7 @@ const API = import.meta.env.VITE_API;
 
 export default function FormRegister() {
 
+    const { userActive, setUserActive } = useContext(ModeContext);
     const [status, setStatus] = useState(null);
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
@@ -103,7 +105,8 @@ export default function FormRegister() {
                                 console.log("Registro exitoso. Datos del usuario:", userData);
 
                                 // Navegar a la página de inicio con los datos del usuario
-                                navigate("/home", { state: { userActive: userData } });
+                                setUserActive(userData.userName) 
+                                navigate("/home", { state: {userActive} });
                             } catch (error) {
                                 console.error("Error de registro:", error);
                                 setStatus(`Error: ${error.message}`);

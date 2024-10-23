@@ -1,6 +1,7 @@
 import { Formik, Form } from 'formik';
-import { useState } from 'react';
+import { useContext, useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import { ModeContext } from '../contexts/MainContext';
 import { InputText } from "primereact/inputtext";
 import { Password } from "primereact/password";
 import { Message } from 'primereact/message';
@@ -9,61 +10,113 @@ import { Card } from 'primereact/card';
 import { Divider } from 'primereact/divider';
 import * as Yup from 'yup';
 
+const API = import.meta.env.VITE_API;
+
 export default function FormLogin() {
+    const { userActive, setUserActive } = useContext(ModeContext);
+    // const usuariosRegistrados = JSON.parse(localStorage.getItem('listausuarios')) || [];
+  //   const usuariosRegistrados = async () => await fetch(`${API}/user`, {
+  //     method: "GET",
+  //     headers: {
+  //         "Content-Type": "application/json",
+  //     },
+  // });
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
 
     const SignupSchema = Yup.object().shape({
-        userName: Yup.string()
+        username: Yup.string()
             .required('Debe ingresar un nombre de usuario')
-            .test(
-                'checkUser',
-                'El nombre de usuario no existe',
-                function(value) {
-                    const ListadoUsuarios = usuariosRegistrados.map( usuario => usuario.user);
-                    if (ListadoUsuarios.includes(value)){
-                        return true
-                    } else {
-                        return false
-                    }           
-                }
-            ),
-        passWord: Yup.string()
+            // .test(
+            //     'checkUser',
+            //     'El nombre de usuario no existe',
+            //     function(value) {
+            //         const ListadoUsuarios = usuariosRegistrados.map( usuario => usuario.userName);
+            //         if (ListadoUsuarios.includes(value)){
+            //             setUserActive(value)
+            //             return true
+            //         } else {
+            //             return false
+            //         }           
+            //     }
+            // )
+            ,
+        password: Yup.string()
             .required('La contraseña es obligatoria')
-            .test(
-                'checkPassword',
-                'La contraseña es incorrecta',
-                function(value) {
-                    const usuario = usuariosRegistrados.find(usuario => usuario.user === userActive)
-                    if (!usuario){
-                        return false
-                    }
-                    else if (value === usuario.password){
-                        return true
-                    } else  {
-                        return false
-                    }
-                }
-            ),
-
+            // .test(
+            //     'checkPassword',
+            //     'La contraseña es incorrecta',
+            //     function(value) {
+            //         const usuario = usuariosRegistrados.find(usuario => usuario.user === userActive)
+            //         if (!usuario){
+            //             return false
+            //         }
+            //         else if (value === usuario.password){
+            //             return true
+            //         } else  {
+            //             return false
+            //         }
+            //     }
+            // )
+            ,
     });
-
     return (
         <div className="flex justify-content-center align-items-center min-h-screen bg-blue-50">
             <Card className="w-full md:w-30rem shadow-8">
                 <h1 className="text-center text-primary mb-4">Iniciar Sesión</h1>
                 <Divider className="mb-4" />
                 <Formik
-                    initialValues={{ userName: '', passWord: '' }}
+                    initialValues={{ username: '', password: '' }}
                     validationSchema={SignupSchema}
-                    onSubmit={(values, { setSubmitting }) => {
+                    onSubmit={(values, { setSubmitting, setStatus }) => {
                         setLoading(true);
+                        setStatus(null);
+
                         setTimeout(() => {
                             setLoading(false);
                             setSubmitting(false);  
-                            setUserActive(values.userName)              
-                            navigate("/home");
+                            (async () => {
+                                try {
+                                    console.log("Intentando registrar con los valores:", values);
+    
+                                    const response = await fetch(`${API}/login`, {
+                                        method: "POST",
+                                        headers: {
+                                            "Content-Type": "application/json",
+                                        },
+                                        body: JSON.stringify(values),
+                                    });
+    
+                                    console.log("Estado de la respuesta:", response.status);
+    
+                                    if (!response.ok) {
+                                        const errorData = await response.json();
+                                        throw new Error(errorData.message || "Error en el registro");
+                                    }
+    
+                                    const userData = await response.json();
+                                    console.log("Registro exitoso. Datos del usuario:", userData);
+    
+                                    // Navegar a la página de inicio con los datos del usuario
+                                    
+                                    navigate("/home", { state: {userActive: userData.username} });
+                                } catch (error) {
+                                    console.error("Error de registro:", error);
+                                    setStatus(`Error: ${error.message}`);
+                                } finally {
+                                    setLoading(false);
+                                    setSubmitting(false);
+                                }
+                            })();
+
+
+
+
+
+
                         }, 2000);
+
+
                     }}
                 >
                     {({ values, errors, touched, handleChange, handleBlur, isSubmitting, handleSubmit }) => (
@@ -71,31 +124,31 @@ export default function FormLogin() {
                             <div className="flex flex-column gap-4">
                                 <span className="p-float-label">
                                     <InputText
-                                        id="userName"
-                                        name="userName"
-                                        value={values.userName}
+                                        id="username"
+                                        name="username"
+                                        value={values.username}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
-                                        className={errors.userName && touched.userName ? 'p-invalid w-full' : 'w-full'}
+                                        className={errors.username && touched.username ? 'p-invalid w-full' : 'w-full'}
                                     />
-                                    <label htmlFor="userName">Nombre de Usuario</label>
+                                    <label htmlFor="username">Nombre de Usuario</label>
                                 </span>
-                                {errors.userName && touched.userName && <Message severity="error" text={errors.userName} />}
+                                {errors.username && touched.username && <Message severity="error" text={errors.username} />}
 
                                 <span className="p-float-label">
                                     <Password
-                                        id="passWord"
-                                        name="passWord"
-                                        value={values.passWord}
+                                        id="password"
+                                        name="password"
+                                        value={values.password}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         toggleMask
-                                        className={errors.passWord && touched.passWord ? 'p-invalid w-full' : 'w-full'}
+                                        className={errors.password && touched.password ? 'p-invalid w-full' : 'w-full'}
                                         feedback={false}
                                     />
-                                    <label htmlFor="passWord">Contraseña</label>
+                                    <label htmlFor="password">Contraseña</label>
                                 </span>
-                                {errors.passWord && touched.passWord && <Message severity="error" text={errors.passWord} />}
+                                {errors.passWord && touched.password && <Message severity="error" text={errors.password} />}
 
                                 <div className='flex justify-content-between align-items-center mt-4'>
                                     <Button
