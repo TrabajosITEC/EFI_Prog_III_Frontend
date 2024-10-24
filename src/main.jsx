@@ -1,4 +1,3 @@
-import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from '../components/App';
 import { ModeProvider } from '../contexts/MainContext';
@@ -16,10 +15,8 @@ const primeConfig = {
 
 createRoot(document.getElementById('root')).render(
   <PrimeReactProvider value={primeConfig}>
-    <StrictMode>
       <ModeProvider>
         <App/>
       </ModeProvider>
-    </StrictMode>
   </PrimeReactProvider>
 )

@@ -1,7 +1,7 @@
 import { Formik, Form } from 'formik';
-import { useContext, useState } from "react";
+import {  useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import { ModeContext } from '../contexts/MainContext';
+// import { ModeContext } from '../contexts/MainContext';
 import { InputText } from "primereact/inputtext";
 import { Password } from "primereact/password";
 import { Message } from 'primereact/message';
@@ -13,7 +13,7 @@ import * as Yup from 'yup';
 const API = import.meta.env.VITE_API;
 
 export default function FormLogin() {
-    const { userActive, setUserActive } = useContext(ModeContext);
+    // const { userActive, setUserActive } = useContext(ModeContext);
     // const usuariosRegistrados = JSON.parse(localStorage.getItem('listausuarios')) || [];
   //   const usuariosRegistrados = async () => await fetch(`${API}/user`, {
   //     method: "GET",
@@ -21,6 +21,7 @@ export default function FormLogin() {
   //         "Content-Type": "application/json",
   //     },
   // });
+    const [error, setError] = useState(null);
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
 
@@ -86,36 +87,24 @@ export default function FormLogin() {
                                         },
                                         body: JSON.stringify(values),
                                     });
-    
-                                    console.log("Estado de la respuesta:", response.status);
-    
+
+                                    const data = await response.json();
                                     if (!response.ok) {
-                                        const errorData = await response.json();
-                                        throw new Error(errorData.message || "Error en el registro");
+                                        throw new Error(data);
                                     }
-    
-                                    const userData = await response.json();
-                                    console.log("Registro exitoso. Datos del usuario:", userData);
-    
-                                    // Navegar a la página de inicio con los datos del usuario
-                                    
-                                    navigate("/home", { state: {userActive: userData.username} });
+                                    console.log("Registro exitoso. Datos del usuario:", data);
+                                    navigate("/home",  { state: { userActive : values.username } });
+
                                 } catch (error) {
                                     console.error("Error de registro:", error);
                                     setStatus(`Error: ${error.message}`);
+                                    setError(error.message)
                                 } finally {
                                     setLoading(false);
                                     setSubmitting(false);
                                 }
                             })();
-
-
-
-
-
-
                         }, 2000);
-
 
                     }}
                 >
@@ -148,7 +137,14 @@ export default function FormLogin() {
                                     />
                                     <label htmlFor="password">Contraseña</label>
                                 </span>
-                                {errors.passWord && touched.password && <Message severity="error" text={errors.password} />}
+                                {errors.password && touched.password && <Message severity="error" text={errors.password} />}
+                                {error && (
+                                    <Message 
+                                        severity="error" 
+                                        text={error}
+                                        className="mt-3"
+                                    />
+                                )}
 
                                 <div className='flex justify-content-between align-items-center mt-4'>
                                     <Button
