@@ -27,7 +27,7 @@ export default function FormLogin() {
 
     const SignupSchema = Yup.object().shape({
         username: Yup.string()
-            .required('Debe ingresar un nombre de usuario')
+            .required('Debe ingresar un nombre de buurito ortega')
             // .test(
             //     'checkUser',
             //     'El nombre de usuario no existe',

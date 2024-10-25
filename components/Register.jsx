@@ -15,6 +15,7 @@ const API = import.meta.env.VITE_API;
 export default function FormRegister() {
 
     const { userActive, setUserActive } = useContext(ModeContext);
+    // eslint-disable-next-line no-unused-vars
     const [status, setStatus] = useState(null);
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
