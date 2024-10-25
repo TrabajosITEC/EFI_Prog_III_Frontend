@@ -1,6 +1,6 @@
 import { createRoot } from 'react-dom/client'
-import App from '../components/App';
-import { ModeProvider } from '../contexts/MainContext';
+import App from './components/App';
+import { ModeProvider } from './contexts/MainContext';
 
 import { PrimeReactProvider} from 'primereact/api';
 import 'primeicons/primeicons.css';
