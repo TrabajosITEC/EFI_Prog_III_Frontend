@@ -1,21 +1,23 @@
 import { useLocation } from "react-router-dom"
 import { useState, useEffect } from "react"
+import { authService } from "../services/token";
 const API = import.meta.env.VITE_API;
 
 export default function Home() {
   const location = useLocation()
   const { userActive } = location.state || {}
   const [games, setGames] = useState([])
+  const  userToken = authService.getUserName()
 
   useEffect(() => {
     const fetchGames = async () => {
+      const token = authService.getToken();
       try {
         const response = await fetch(`${API}/games`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            // Para el token:
-            // "Authorization": `Bearer ${localStorage.getItem('authToken')}`
+            ...(token && { 'Authorization': `Bearer ${token}` })
           },
         });
         
@@ -23,6 +25,7 @@ export default function Home() {
         console.log("🚀 ~ data:", data)
         
         if (!response.ok) {
+          authService.removeToken();
           throw new Error(data.message || JSON.stringify(data));
         }
         
@@ -42,12 +45,13 @@ export default function Home() {
 
   return (
     <div>
-      <p>Hola {userActive}</p>
+      <p>Hola desde el location {userActive}</p>
+      <p>Hola desde el token {userToken}</p>
       
       <div>
         {games.map(game => (
           <div key={game.id}>
-            {game.name}
+            <p>{game.title}</p>
           </div>
         ))}
       </div>

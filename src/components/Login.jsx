@@ -8,6 +8,7 @@ import { Message } from 'primereact/message';
 import { Button } from 'primereact/button';
 import { Card } from 'primereact/card';
 import { Divider } from 'primereact/divider';
+import { authService } from '../services/token';
 import * as Yup from 'yup';
 
 const API = import.meta.env.VITE_API;
@@ -90,8 +91,12 @@ export default function FormLogin() {
 
                                     const data = await response.json();
                                     if (!response.ok) {
+                                        authService.removeToken();
                                         throw new Error(data);
                                     }
+                                    
+                                    authService.setToken(data.token)
+
                                     console.log("Registro exitoso. Datos del usuario:", data);
                                     navigate("/home",  { state: { userActive : values.username } });
 
@@ -103,6 +108,7 @@ export default function FormLogin() {
                                     setLoading(false);
                                     setSubmitting(false);
                                 }
+
                             })();
                         }, 2000);
 
