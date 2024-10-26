@@ -1,60 +1,110 @@
-import { Menubar } from 'primereact/menubar';
-import { Button } from 'primereact/button';
+import * as React from 'react';
+import { AppBar, Toolbar, Button } from '@mui/material';
+import { purple } from '@mui/material/colors';
+import HomeIcon from '@mui/icons-material/Home';
+import ListIcon from '@mui/icons-material/List';
+import EmailIcon from '@mui/icons-material/Email';
+import MenuIcon from '@mui/icons-material/Menu';
+import SwipeableDrawer from '@mui/material/SwipeableDrawer';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import InboxIcon from '@mui/icons-material/MoveToInbox';
+import MailIcon from '@mui/icons-material/Mail';
 import { useNavigate } from 'react-router-dom';
-import { Avatar } from 'primereact/avatar';
-
 
 export default function NavBar() {
-  
-
     const navigate = useNavigate();
+    const [state, setState] = React.useState({
+        top: false,
+        left: false,
+        bottom: false,
+        right: false,
+    });
 
     const startItems = [
         {
             label: 'Home',
-            icon: 'pi pi-home',
-            command: () => {
-                navigate("/")
-            }
+            icon: <HomeIcon />,
+            command: () => navigate("/"),
         },
         {
             label: 'Users',
-            icon: 'pi pi-list',
-            command: () => {
-                navigate("/users")
-            }
+            icon: <ListIcon />,
+            command: () => navigate("/users"),
         },
         {
             label: 'Contacto',
-            icon: 'pi pi-envelope',
-            command: () => {
-                navigate("/about")
-            }
+            icon: <EmailIcon />,
+            command: () => navigate("/about"),
         },
     ];
 
-    const endItems =
-    <div className='flex flex-row' >
-        
-            <Avatar 
-            icon="pi pi-user" 
-            size="large" 
-            style={{ backgroundColor: '#FFFFFF', color: '#FF4500' }} 
-            shape="circle" 
-            />
+    const toggleDrawer = (anchor, open) => (event) => {
+        if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+            return;
+        }
+        setState({ ...state, [anchor]: open });
+    };
 
-        <Button 
-        label="Cerrar Sesion" 
-        icon="pi pi-power-off"
-        style={{background:'None', border:'None', color:'blue'}}
-        />
-    </div>
-    
-        
-    
+    const list = () => (
+
+        <List sx={{ bgcolor: purple[800] }} className='h-full'>
+            {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+                <ListItem key={text} disablePadding>
+                    <ListItemButton>
+                        <ListItemIcon>
+                            {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                        </ListItemIcon>
+                        <ListItemText primary={text} />
+                    </ListItemButton>
+                </ListItem>
+            ))}
+        </List>
+    );
+
     return (
-        <div className="card" style={{marginTop:0}}>
-            <Menubar className='custom-menubar' model={startItems} end={endItems} />
-        </div>
-    )
+        <AppBar position="fixed" sx={{ bgcolor: purple[800] }}>
+            <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                <div>
+                    {startItems.map((item, index) => (
+                        <Button
+                            key={index}
+                            startIcon={item.icon}
+                            onClick={item.command}
+                            sx={{
+                                color: 'white',
+                                textTransform: 'uppercase',
+                                bgcolor: purple[800],
+                                opacity: 0.8,
+                                borderRadius: 1,
+                                mr: 1,
+                                '&:hover': {
+                                    bgcolor: purple[600],
+                                    color: 'white',
+                                    opacity: 1,
+                                },
+                            }}
+                        >
+                            {item.label}
+                        </Button>
+                    ))}
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <Button onClick={toggleDrawer('right', true)}><MenuIcon sx={{ color: 'white' }} /></Button>
+                    <SwipeableDrawer
+                        anchor="right"
+                        open={state['right']}
+                        onClose={toggleDrawer('right', false)}
+                        onOpen={toggleDrawer('right', true)}
+                    >
+                        {list('right')}
+                    </SwipeableDrawer>
+                </div>
+            </Toolbar>
+        </AppBar>
+    );
 }

@@ -4,7 +4,7 @@ import Home from "../components/Home"
 export default function HomePage() {
 
   return (
-    <MainLayOut >
+    <MainLayOut className='h-full'>
       <Home></Home>
     </MainLayOut>
   )
