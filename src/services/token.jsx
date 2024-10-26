@@ -47,7 +47,7 @@ export const authService = {
 
     getUserId() {
         const tokenInfo = this.getTokenInfo();
-        return tokenInfo?.sub || null; // 'sub' es el ID del usuario en JWT
+        return tokenInfo?.id || null; 
     },
 
     getUserName() {

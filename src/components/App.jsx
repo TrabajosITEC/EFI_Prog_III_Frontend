@@ -11,9 +11,9 @@ function App() {
 
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<LoginPage />} />
+        <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/home" element={<Protected> <HomePage /> </Protected>  } />
+        <Route path="/" element={ <HomePage /> } />
         <Route path="/about" element={<Protected> <AboutPage /> </Protected> } />
       </Routes>
     </BrowserRouter>

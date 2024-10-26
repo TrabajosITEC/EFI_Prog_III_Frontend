@@ -9,7 +9,7 @@ export default function Protected({children}) {
   
   useEffect(() => {
       if (!token) {
-        navigate("/" );
+        navigate("/login" );
       }
     }, [navigate, token]);
   

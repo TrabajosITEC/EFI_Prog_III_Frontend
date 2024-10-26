@@ -14,53 +14,15 @@ import * as Yup from 'yup';
 const API = import.meta.env.VITE_API;
 
 export default function FormLogin() {
-    // const { userActive, setUserActive } = useContext(ModeContext);
-    // const usuariosRegistrados = JSON.parse(localStorage.getItem('listausuarios')) || [];
-  //   const usuariosRegistrados = async () => await fetch(`${API}/user`, {
-  //     method: "GET",
-  //     headers: {
-  //         "Content-Type": "application/json",
-  //     },
-  // });
     const [error, setError] = useState(null);
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
 
     const SignupSchema = Yup.object().shape({
         username: Yup.string()
-            .required('Debe ingresar un nombre de buurito ortega')
-            // .test(
-            //     'checkUser',
-            //     'El nombre de usuario no existe',
-            //     function(value) {
-            //         const ListadoUsuarios = usuariosRegistrados.map( usuario => usuario.userName);
-            //         if (ListadoUsuarios.includes(value)){
-            //             setUserActive(value)
-            //             return true
-            //         } else {
-            //             return false
-            //         }           
-            //     }
-            // )
-            ,
+            .required('Debe ingresar un nombre de buurito ortega'),
         password: Yup.string()
-            .required('La contraseña es obligatoria')
-            // .test(
-            //     'checkPassword',
-            //     'La contraseña es incorrecta',
-            //     function(value) {
-            //         const usuario = usuariosRegistrados.find(usuario => usuario.user === userActive)
-            //         if (!usuario){
-            //             return false
-            //         }
-            //         else if (value === usuario.password){
-            //             return true
-            //         } else  {
-            //             return false
-            //         }
-            //     }
-            // )
-            ,
+            .required('La contraseña es obligatoria'),
     });
     return (
         <div className="flex justify-content-center align-items-center min-h-screen bg-blue-50">
@@ -98,7 +60,8 @@ export default function FormLogin() {
                                     authService.setToken(data.token)
 
                                     console.log("Registro exitoso. Datos del usuario:", data);
-                                    navigate("/home",  { state: { userActive : values.username } });
+                                    navigate("/");
+                                    // navigate("/home",  { state: { userActive : values.username } });
 
                                 } catch (error) {
                                     console.error("Error de registro:", error);
