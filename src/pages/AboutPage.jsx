@@ -4,7 +4,7 @@ import About from "../components/About"
 export default function AboutPage() {
 
   return (
-    <MainLayOut >
+    <MainLayOut className='h-full'>
       <About></About>
     </MainLayOut>
   )
