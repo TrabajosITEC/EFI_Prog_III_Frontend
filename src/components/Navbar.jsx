@@ -31,9 +31,9 @@ export default function NavBar() {
             command: () => navigate("/"),
         },
         {
-            label: 'Users',
+            label: 'Mis Compras',
             icon: <ListIcon />,
-            command: () => navigate("/users"),
+            command: () => navigate("/misCompras"),
         },
         {
             label: 'Contacto',
