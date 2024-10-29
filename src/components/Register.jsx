@@ -14,6 +14,7 @@ const API = import.meta.env.VITE_API;
 
 export default function FormRegister() {
 
+    const [error, setError] = useState(null);
     const { userActive, setUserActive } = useContext(ModeContext);
     // eslint-disable-next-line no-unused-vars
     const [status, setStatus] = useState(null);
@@ -21,7 +22,7 @@ export default function FormRegister() {
     const [loading, setLoading] = useState(false);
 
     const SignupSchema = Yup.object().shape({
-        userName: Yup.string()
+        username: Yup.string()
             .required('Debe ingresar un nombre de usuario')
             .test(
                 'len',
@@ -44,7 +45,7 @@ export default function FormRegister() {
         //         }           
         //     }
         // ),
-        passWord: Yup.string()
+        password: Yup.string()
             .matches(
                 /^(?=.*[A-Z])(?=.*\d).{1,8}$/,
                 'La contraseña debe tener al menos una mayúscula, al menos un número y como máximo 8 caracteres'
@@ -73,8 +74,8 @@ export default function FormRegister() {
                 <Divider className="mb-4" />
                 <Formik
                     initialValues={{
-                        userName: '',
-                        passWord: '',
+                        username: '',
+                        password: '',
                         email: '',
                         role: 'gamer',
                     }}
@@ -99,18 +100,19 @@ export default function FormRegister() {
 
                                 if (!response.ok) {
                                     const errorData = await response.json();
-                                    throw new Error(errorData.message || "Error en el registro");
+                                    throw new Error(errorData);
                                 }
 
                                 const userData = await response.json();
                                 console.log("Registro exitoso. Datos del usuario:", userData);
 
                                 // Navegar a la página de inicio con los datos del usuario
-                                setUserActive(userData.userName) 
+                                setUserActive(userData.username) 
                                 navigate("/home", { state: {userActive} });
                             } catch (error) {
-                                console.error("Error de registro:", error);
-                                setStatus(`Error: ${error.message}`);
+                                console.error("Error de registro:", error.message);
+                               
+                                setError(error.message)
                             } finally {
                                 setLoading(false);
                                 setSubmitting(false);
@@ -138,35 +140,35 @@ export default function FormRegister() {
                             <div className="flex flex-column gap-4">
                                 <span className="p-float-label">
                                     <InputText
-                                        id="userName"
-                                        name="userName"
-                                        value={values.userName}
+                                        id="username"
+                                        name="username"
+                                        value={values.username}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
-                                        className={errors.userName && touched.userName ? 'p-invalid w-full' : 'w-full'}
+                                        className={errors.username && touched.username ? 'p-invalid w-full' : 'w-full'}
                                     />
-                                    <label htmlFor="userName">Nombre de Usuario</label>
+                                    <label htmlFor="username">Nombre de Usuario</label>
                                 </span>
-                                {errors.userName && touched.userName && <Message severity="error" text={errors.userName} />}
+                                {errors.username && touched.username && <Message severity="error" text={errors.username} />}
 
                                 <span className="p-float-label">
                                     <Password
-                                        id="passWord"
-                                        name="passWord"
-                                        value={values.passWord}
+                                        id="password"
+                                        name="password"
+                                        value={values.password}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         toggleMask
-                                        className={errors.passWord && touched.passWord ? 'p-invalid w-full' : 'w-full'}
+                                        className={errors.password && touched.password ? 'p-invalid w-full' : 'w-full'}
                                         feedback={true}
                                         promptLabel="Ingrese una contraseña"
                                         strongLabel="Seguridad Fuerte"
                                         mediumLabel="Seguridad Media"
                                         weakLabel="Seguridad Baja"
                                     />
-                                    <label htmlFor="passWord">Contraseña</label>
+                                    <label htmlFor="password">Contraseña</label>
                                 </span>
-                                {errors.passWord && touched.passWord && <Message severity="error" text={errors.passWord} />}
+                                {errors.password && touched.password && <Message severity="error" text={errors.password} />}
 
                                 <span className="p-float-label">
                                     <InputText
@@ -196,6 +198,13 @@ export default function FormRegister() {
                                     onClick={() => navigate("/")}
                                     className="p-button-outlined w-full md:w-auto mt-2 md:mt-0"
                                 />
+                                                                {error && (
+                                    <Message 
+                                        severity="error" 
+                                        text={error}
+                                        className="mt-3"
+                                    />
+                                )}
                             </div>
                         </Form>
                     )}
