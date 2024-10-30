@@ -1,6 +1,6 @@
 // import { useLocation } from "react-router-dom"
 import { useState, useEffect } from "react"
-import { authService } from "../services/token";
+
 const API = import.meta.env.VITE_API;
 
 export default function Home() {

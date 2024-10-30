@@ -3,7 +3,8 @@ import { AppBar, Toolbar, Button } from '@mui/material';
 import { purple } from '@mui/material/colors';
 import HomeIcon from '@mui/icons-material/Home';
 import ListIcon from '@mui/icons-material/List';
-import EmailIcon from '@mui/icons-material/Email';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import MenuIcon from '@mui/icons-material/Menu';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import List from '@mui/material/List';
@@ -11,24 +12,40 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
+import Divider from '@mui/material/Divider';
 import { useNavigate } from 'react-router-dom';
+import 'remixicon/fonts/remixicon.css';
 
 export default function NavBar() {
     const navigate = useNavigate();
     const [state, setState] = React.useState({
-        top: false,
-        left: false,
-        bottom: false,
         right: false,
     });
 
-    const startItems = [
+    const navItems = [
         {
-            label: 'Home',
-            icon: <HomeIcon />,
-            command: () => navigate("/"),
+            label: 'Playstation',
+            icon: <i className="ri-playstation-line"></i>
+        },
+        {
+            label: 'Xbox',
+            icon: <i className="ri-xbox-line"></i>
+        },
+        {
+            label: 'Nintendo',
+            icon: <i className="ri-switch-line"></i>
+        },
+        {
+            label: 'PC',
+            icon: <i className="ri-computer-line"></i>
+        }
+    ];
+
+    const sidebarItems = [
+        {
+            label: 'Carrito',
+            icon: <ShoppingCartIcon />,
+            command: () => navigate("/cart"),
         },
         {
             label: 'Mis Compras',
@@ -36,9 +53,9 @@ export default function NavBar() {
             command: () => navigate("/misCompras"),
         },
         {
-            label: 'Contacto',
-            icon: <EmailIcon />,
-            command: () => navigate("/about"),
+            label: 'Mi Perfil',
+            icon: <AccountCircleIcon />,
+            command: () => navigate("/profile"),
         },
     ];
 
@@ -50,18 +67,41 @@ export default function NavBar() {
     };
 
     const list = () => (
-
-        <List sx={{ bgcolor: purple[800] }} className='h-full'>
-            {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                <ListItem key={text} disablePadding>
-                    <ListItemButton>
-                        <ListItemIcon>
-                            {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+        <List sx={{ bgcolor: purple[800], color: 'white', height: '100%', position: 'relative' }}>
+            {sidebarItems.map((item, index) => (
+                <ListItem key={index} disablePadding>
+                    <ListItemButton onClick={item.command}>
+                        <ListItemIcon sx={{ color: 'white' }}>
+                            {item.icon}
                         </ListItemIcon>
-                        <ListItemText primary={text} />
+                        <ListItemText primary={item.label} />
                     </ListItemButton>
                 </ListItem>
             ))}
+            <Divider sx={{ bgcolor: 'white', my: 2 }} />
+
+            <ListItem
+                sx={{
+                    position: 'absolute',
+                    bottom: 0,
+                    width: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    bgcolor: purple[900],
+                    py: 2,
+                }}
+            >
+                <ListItemText primary="NombreUsuario" sx={{ textAlign: 'center', color: 'white' }} />
+                <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={() => { /* Lógica para cerrar sesión */ }}
+                    sx={{ mt: 1 }}
+                >
+                    Cerrar sesión
+                </Button>
+            </ListItem>
         </List>
     );
 
@@ -69,7 +109,7 @@ export default function NavBar() {
         <AppBar position="fixed" sx={{ bgcolor: purple[800] }}>
             <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
                 <div>
-                    {startItems.map((item, index) => (
+                    {navItems.map((item, index) => (
                         <Button
                             key={index}
                             startIcon={item.icon}
@@ -94,7 +134,9 @@ export default function NavBar() {
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <Button onClick={toggleDrawer('right', true)}><MenuIcon sx={{ color: 'white' }} /></Button>
+                    <Button onClick={toggleDrawer('right', true)}>
+                        <MenuIcon sx={{ color: 'white' }} />
+                    </Button>
                     <SwipeableDrawer
                         anchor="right"
                         open={state['right']}

@@ -1,44 +1,35 @@
 import React from 'react';
 import { Carousel } from 'primereact/carousel';
-import { Button } from 'primereact/button';
-
-const items = [
-  {
-    image: 'https://via.placeholder.com/600x300/FF5733/FFFFFF?text=Imagen+1',
-    title: 'Título 1',
-    description: 'Descripción 1'
-  },
-  {
-    image: 'https://via.placeholder.com/600x300/33FF57/FFFFFF?text=Imagen+2',
-    title: 'Título 2',
-    description: 'Descripción 2'
-  },
-  {
-    image: 'https://via.placeholder.com/600x300/3357FF/FFFFFF?text=Imagen+3',
-    title: 'Título 3',
-    description: 'Descripción 3'
-  },
-];
+import image1 from '../img/gem1.jpeg';
+import image2 from '../img/gem2.jpeg';
+import image3 from '../img/gem3.jpeg';
+import './Carousel.css';
 
 const CarouselComponent = () => {
+  const carouselImages = [
+    { id: 1, image: image1, alt: 'Imagen 1' },
+    { id: 2, image: image2, alt: 'Imagen 2' },
+    { id: 3, image: image3, alt: 'Imagen 3' },
+  ];
+
   const itemTemplate = (item) => {
     return (
-      <div className="carousel-item">
-        <img src={item.image} alt={item.title} />
-        <div className="carousel-content">
-          <h3>{item.title}</h3>
-          <p>{item.description}</p>
-          <Button label="Learn More" className="p-button-secondary" />
-        </div>
+      <div className="carousel-item" key={item.id}>
+        <img src={item.image} alt={item.alt} className="carousel-image" />
       </div>
     );
   };
 
+
   return (
-    <div className="card">
-      <h2>Carousel Example</h2>
-      <Carousel value={items} itemTemplate={itemTemplate} numVisible={1} numScroll={1} />
-    </div>
+    <Carousel
+      className="custom-carousel"
+      value={carouselImages}
+      itemTemplate={itemTemplate}
+      numVisible={1}
+      numScroll={1}
+      circular
+    />
   );
 };
 
