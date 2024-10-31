@@ -68,8 +68,8 @@ export default function FormRegister({ isVisible }) {
     });
 
     return (
-        <div className="d-flex justify-content-center align-items-center min-h-screen" style={{paddingRight: '200px'}}>
-            <Card className="w-full md:w-30rem shadow-8" style={{ backgroundColor: 'rgba(0, 0, 0, 0.587)'}}>
+        <div className="d-flex justify-content-center align-items-center min-h-screen" style={{ paddingRight: '200px' }}>
+            <Card className="w-full md:w-30rem shadow-8" style={{ backgroundColor: 'rgba(0, 0, 0, 0.587)' }}>
                 <h1 className="text-center text-white mb-4 main-font-titles">Crea tu cuenta</h1>
                 <Divider className="mb-4" />
                 <Formik
@@ -107,11 +107,11 @@ export default function FormRegister({ isVisible }) {
                                 console.log("Registro exitoso. Datos del usuario:", userData);
 
                                 // Navegar a la página de inicio con los datos del usuario
-                                setUserActive(userData.username) 
-                                navigate("/home", { state: {userActive} });
+                                setUserActive(userData.username)
+                                navigate("/", { state: { userActive } });
                             } catch (error) {
                                 console.error("Error de registro:", error.message);
-                               
+
                                 setError(error.message)
                             } finally {
                                 setLoading(false);
@@ -194,12 +194,12 @@ export default function FormRegister({ isVisible }) {
                                     icon="pi pi-home"
                                     onClick={() => isVisible()}
                                     className="text-center redirect-register-form text-white text-decoration-none w-full md:w-auto mt-1 md:mt-0"
-                                > 
+                                >
                                     Ya tengo cuenta. Iniciar Sesión
                                 </a>
-                                    {error && (
-                                    <Message 
-                                        severity="error" 
+                                {error && (
+                                    <Message
+                                        severity="error"
                                         text={error}
                                         className="mt-3"
                                     />

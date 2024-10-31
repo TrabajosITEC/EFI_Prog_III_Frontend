@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { AppBar, Toolbar, Button } from '@mui/material';
 import { purple } from '@mui/material/colors';
-import HomeIcon from '@mui/icons-material/Home';
 import ListIcon from '@mui/icons-material/List';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -15,13 +14,17 @@ import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import { useNavigate } from 'react-router-dom';
 import 'remixicon/fonts/remixicon.css';
+import SearchBar from './Search';
 
 export default function NavBar() {
     const navigate = useNavigate();
     const [state, setState] = React.useState({
         right: false,
     });
-
+    const handleSearch = (game) => {
+        console.log("Búsqueda de:", game);
+        navigate(`/games/${game.id}`);
+    };
     const navItems = [
         {
             label: 'Playstation',
@@ -132,6 +135,8 @@ export default function NavBar() {
                         </Button>
                     ))}
                 </div>
+
+                <SearchBar onSearch={handleSearch} />
 
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                     <Button onClick={toggleDrawer('right', true)}>
