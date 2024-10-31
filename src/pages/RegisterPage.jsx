@@ -1,5 +1,5 @@
 // import { MainLayOut } from "../layouts/Mainlayout"
-import FormRegister from "../components/Register"
+import FormRegister from "../components/FormRegister"
 
 export default function RegisterPage() {
 

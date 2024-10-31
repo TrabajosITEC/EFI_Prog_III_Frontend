@@ -1,7 +1,8 @@
-import { Formik, Form } from 'formik';
 import {  useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import { Formik, Form } from 'formik';
 // import { ModeContext } from '../contexts/MainContext';
+
 import { InputText } from "primereact/inputtext";
 import { Password } from "primereact/password";
 import { Message } from 'primereact/message';
@@ -9,25 +10,28 @@ import { Button } from 'primereact/button';
 import { Card } from 'primereact/card';
 import { Divider } from 'primereact/divider';
 import { authService } from '../services/token';
+
 import * as Yup from 'yup';
+
+import '../styles/FormLogin.css';
 
 const API = import.meta.env.VITE_API;
 
-export default function FormLogin() {
+export default function FormLogin({ isVisible }) {
     const [error, setError] = useState(null);
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
 
     const SignupSchema = Yup.object().shape({
         username: Yup.string()
-            .required('Debe ingresar un nombre de buurito ortega'),
+            .required('El nombre de usuario es obligatorio.'),
         password: Yup.string()
-            .required('La contraseña es obligatoria'),
+            .required('La contraseña es obligatoria.'),
     });
     return (
-        <div className="flex justify-content-center align-items-center min-h-screen bg-blue-50">
-            <Card className="w-full md:w-30rem shadow-8">
-                <h1 className="text-center text-primary mb-4">Iniciar Sesión</h1>
+        <div className="d-flex justify-content-center align-items-center min-h-screen" style={{paddingRight: '200px'}}>
+            <Card className="w-full md:w-30rem shadow" style={{ backgroundColor: 'rgba(0, 0, 0, 0.587)'}}> 
+                <h1 className="text-white text-center main-font-titles mb-4">Inicia Sesión</h1>
                 <Divider className="mb-4" />
                 <Formik
                     initialValues={{ username: '', password: '' }}
@@ -66,7 +70,7 @@ export default function FormLogin() {
                                 } catch (error) {
                                     console.error("Error de registro:", error);
                                     setStatus(`Error: ${error.message}`);
-                                    setError(error.message)
+                                    setError(error.message);
                                 } finally {
                                     setLoading(false);
                                     setSubmitting(false);
@@ -80,42 +84,43 @@ export default function FormLogin() {
                     {({ values, errors, touched, handleChange, handleBlur, isSubmitting, handleSubmit }) => (
                         <Form>
                             <div className="flex flex-column gap-4">
-                                <span className="p-float-label">
+                                <span className="p-float-label mt-3">
                                     <InputText
                                         id="username"
                                         name="username"
                                         value={values.username}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
-                                        className={errors.username && touched.username ? 'p-invalid w-full' : 'w-full'}
+                                        className={errors.username && touched.username ? 'p-invalid w-full custom-inputs' : 'w-full custom-inputs text-white'}
                                     />
                                     <label htmlFor="username">Nombre de Usuario</label>
                                 </span>
-                                {errors.username && touched.username && <Message severity="error" text={errors.username} />}
+                                {errors.username && touched.username && <Message severity="contrast text-danger p-0" text={errors.username} />}
 
-                                <span className="p-float-label">
-                                    <Password
+                                <span className="p-float-label mt-2">
+                                    <InputText
+                                        type="password"
                                         id="password"
                                         name="password"
                                         value={values.password}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         toggleMask
-                                        className={errors.password && touched.password ? 'p-invalid w-full' : 'w-full'}
+                                        className={errors.password && touched.password ? 'p-invalid w-full custom-inputs' : 'w-full custom-inputs text-white'}
                                         feedback={false}
                                     />
                                     <label htmlFor="password">Contraseña</label>
                                 </span>
-                                {errors.password && touched.password && <Message severity="error" text={errors.password} />}
+                                {errors.password && touched.password && <Message severity="contrast text-danger p-0" text={errors.password} />}
                                 {error && (
                                     <Message 
-                                        severity="error" 
+                                        severity="contrast" 
                                         text={error}
-                                        className="mt-3"
+                                        className="mt-1"
                                     />
                                 )}
 
-                                <div className='flex justify-content-between align-items-center mt-4'>
+                                <div className='d-flex flex-column justify-content-center align-items-center mt-2'>
                                     <Button
                                         severity="primary"
                                         type='submit'
@@ -123,14 +128,16 @@ export default function FormLogin() {
                                         icon="pi pi-sign-in"
                                         loading={loading || isSubmitting}
                                         onClick={handleSubmit} 
-                                        className="w-full md:w-auto"
+                                        className="p-button-outlined rounded text-white w-full mt-2"
                                     />
-                                    <Button
+                                    <a
                                         label="Registrarse"
                                         icon="pi pi-user-plus"
-                                        onClick={() => {navigate("/register")}}
-                                        className="p-button-outlined w-full md:w-auto mt-2 md:mt-0"
-                                    />
+                                        onClick={() => isVisible()}
+                                        className="redirect-register-form text-white text-decoration-none w-full md:w-auto mt-4 md:mt-0"
+                                    >
+                                        No tengo cuenta. Registrarme
+                                    </a>    
                                 </div>
                             </div>
                         </Form>

@@ -6,6 +6,8 @@ import RegisterPage from '../pages/RegisterPage';
 import MisCompras from '../pages/MisComprasPage';
 import Protected from './Protected';
 
+import '../styles/App.css';
+
 function App() {
 
   return (

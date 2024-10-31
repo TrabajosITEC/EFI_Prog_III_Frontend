@@ -12,7 +12,7 @@ import * as Yup from 'yup';
 
 const API = import.meta.env.VITE_API;
 
-export default function FormRegister() {
+export default function FormRegister({ isVisible }) {
 
     const [error, setError] = useState(null);
     const { userActive, setUserActive } = useContext(ModeContext);
@@ -23,7 +23,7 @@ export default function FormRegister() {
 
     const SignupSchema = Yup.object().shape({
         username: Yup.string()
-            .required('Debe ingresar un nombre de usuario')
+            .required('El nombre de usuario es obligatorio.')
             .test(
                 'len',
                 'El nombre de usuario debe tener entre 3 y 15 caracteres (sin contar espacios)',
@@ -50,9 +50,9 @@ export default function FormRegister() {
                 /^(?=.*[A-Z])(?=.*\d).{1,8}$/,
                 'La contraseña debe tener al menos una mayúscula, al menos un número y como máximo 8 caracteres'
             )
-            .required('La contraseña es obligatoria'),
-        email: Yup.string().email('Correo electrónico inválido')
-            .required('Requerido')
+            .required('La contraseña es obligatoria.'),
+        email: Yup.string().email('Correo electrónico inválido.')
+            .required('El correo electrónico es obligatorio.')
         // .test(
         //     'checkMail',
         //     'El correo electronico esta vinculado a otro usuario',
@@ -68,9 +68,9 @@ export default function FormRegister() {
     });
 
     return (
-        <div className="flex justify-content-center align-items-center min-h-screen bg-blue-50">
-            <Card className="w-full md:w-30rem shadow-8">
-                <h1 className="text-center text-primary mb-4">Formulario de Registro</h1>
+        <div className="d-flex justify-content-center align-items-center min-h-screen" style={{paddingRight: '200px'}}>
+            <Card className="w-full md:w-30rem shadow-8" style={{ backgroundColor: 'rgba(0, 0, 0, 0.587)'}}>
+                <h1 className="text-center text-white mb-4 main-font-titles">Crea tu cuenta</h1>
                 <Divider className="mb-4" />
                 <Formik
                     initialValues={{
@@ -138,39 +138,36 @@ export default function FormRegister() {
                     {({ values, errors, touched, handleChange, handleBlur, isSubmitting, handleSubmit }) => (
                         <Form>
                             <div className="flex flex-column gap-4">
-                                <span className="p-float-label">
+                                <span className="p-float-label mt-3">
                                     <InputText
                                         id="username"
                                         name="username"
                                         value={values.username}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
-                                        className={errors.username && touched.username ? 'p-invalid w-full' : 'w-full'}
+                                        className={errors.username && touched.username ? 'p-invalid w-full custom-inputs text-white' : 'w-full custom-inputs text-white'}
                                     />
                                     <label htmlFor="username">Nombre de Usuario</label>
                                 </span>
-                                {errors.username && touched.username && <Message severity="error" text={errors.username} />}
+                                {errors.username && touched.username && <Message severity="contrast text-danger p-0" text={errors.username} />}
 
-                                <span className="p-float-label">
-                                    <Password
+                                <span className="p-float-label mt-2">
+                                    <InputText
+                                        type='password'
                                         id="password"
                                         name="password"
                                         value={values.password}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         toggleMask
-                                        className={errors.password && touched.password ? 'p-invalid w-full' : 'w-full'}
+                                        className={errors.password && touched.password ? 'p-invalid w-full custom-inputs text-white' : 'w-full custom-inputs text-white'}
                                         feedback={true}
-                                        promptLabel="Ingrese una contraseña"
-                                        strongLabel="Seguridad Fuerte"
-                                        mediumLabel="Seguridad Media"
-                                        weakLabel="Seguridad Baja"
                                     />
                                     <label htmlFor="password">Contraseña</label>
                                 </span>
-                                {errors.password && touched.password && <Message severity="error" text={errors.password} />}
+                                {errors.password && touched.password && <Message severity="contrast text-danger p-0" text={errors.password} />}
 
-                                <span className="p-float-label">
+                                <span className="p-float-label mt-2">
                                     <InputText
                                         id="email"
                                         name="email"
@@ -178,27 +175,29 @@ export default function FormRegister() {
                                         value={values.email}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
-                                        className={errors.email && touched.email ? 'p-invalid w-full' : 'w-full'}
+                                        className={errors.email && touched.email ? 'p-invalid w-full custom-inputs text-white' : 'w-full custom-inputs text-white'}
                                     />
                                     <label htmlFor="email">Correo Electrónico</label>
                                 </span>
-                                {errors.email && touched.email && <Message severity="error" text={errors.email} />}
-                                {status && <Message severity="error" text={status} />}
+                                {errors.email && touched.email && <Message severity="contrast text-danger p-0" text={errors.email} />}
+                                {status && <Message severity="contrast text-danger p-0" text={status} />}
                                 <Button
                                     type='submit'
                                     label="Registrarse"
                                     icon="pi pi-user-plus"
                                     loading={loading || isSubmitting}
                                     onClick={handleSubmit}
-                                    className="w-full mt-4"
+                                    className="p-button-outlined text-white rounded w-full mt-4 rounded"
                                 />
-                                <Button
+                                <a
                                     label="Volver a inicio"
                                     icon="pi pi-home"
-                                    onClick={() => navigate("/")}
-                                    className="p-button-outlined w-full md:w-auto mt-2 md:mt-0"
-                                />
-                                                                {error && (
+                                    onClick={() => isVisible()}
+                                    className="text-center redirect-register-form text-white text-decoration-none w-full md:w-auto mt-1 md:mt-0"
+                                > 
+                                    Ya tengo cuenta. Iniciar Sesión
+                                </a>
+                                    {error && (
                                     <Message 
                                         severity="error" 
                                         text={error}
