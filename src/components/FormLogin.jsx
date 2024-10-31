@@ -114,7 +114,7 @@ export default function FormLogin({ isVisible }) {
                                 {errors.password && touched.password && <Message severity="contrast text-danger p-0" text={errors.password} />}
                                 {error && (
                                     <Message 
-                                        severity="contrast" 
+                                        severity="contrast text-danger p-0" 
                                         text={error}
                                         className="mt-1"
                                     />

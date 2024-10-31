@@ -197,9 +197,9 @@ export default function FormRegister({ isVisible }) {
                                 >
                                     Ya tengo cuenta. Iniciar Sesión
                                 </a>
-                                {error && (
-                                    <Message
-                                        severity="error"
+                                    {error && (
+                                    <Message 
+                                        severity="contrast text-danger p-0" 
                                         text={error}
                                         className="mt-3"
                                     />
