@@ -1,9 +1,10 @@
 import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
 import { grey, purple } from '@mui/material/colors';
+import { useNavigate } from 'react-router-dom';
 
-
-const GameCard = ({ title, description, image, plataform }) => {
+const GameCard = ({ id, title, description, image, platform }) => {
+  const navigate = useNavigate();
   return (
     <Card
       title={title}
@@ -15,10 +16,10 @@ const GameCard = ({ title, description, image, plataform }) => {
         backgroundColor: `${grey[800]}`,
         transition: 'transform 0.2s ease',
       }}
-      footer={<Button label="Buy Now" icon="pi pi-shopping-cart" className='bg-purple-800 border-none' />}
+      footer={<Button label="Buy Now" icon="pi pi-shopping-cart" onClick={() => navigate(`/game/${id}`)} className='bg-purple-800 border-none' />}
       header={image ? (
         <img
-          alt={plataform}
+          alt={platform}
           src={image}
           style={{ width: '100%', height: '150px', objectFit: 'cover' }}
         />

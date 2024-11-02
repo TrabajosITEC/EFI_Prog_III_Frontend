@@ -11,6 +11,7 @@ export default function SearchBar({ onSearch = () => { } }) {
     const inputValue = event.query;
     try {
       const response = await fetch(`http://localhost:3001/games/search?query=${encodeURIComponent(inputValue)}`);
+      console.log('🚀 ~ searchItems ~ response:', response);
       if (response.ok) {
         const data = await response.json();
         setResults(data);

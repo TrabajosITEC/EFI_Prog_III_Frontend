@@ -4,6 +4,7 @@ import AboutPage from '../pages/AboutPage';
 import LoginPage from '../pages/LoginPage';
 import RegisterPage from '../pages/RegisterPage';
 import MisCompras from '../pages/MisComprasPage';
+import GamePage from '../pages/GamePage';
 import Protected from './Protected';
 
 import '../styles/App.css';
@@ -16,9 +17,10 @@ function App() {
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/" element={ <HomePage /> } />
-        <Route path="/misCompras" element={<Protected> <MisCompras/> </Protected> } />
-        <Route path="/about" element={<Protected> <AboutPage /> </Protected> } />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/misCompras" element={<Protected> <MisCompras /> </Protected>} />
+        <Route path="/game/:id" element={<GamePage />} />
+        <Route path="/about" element={<Protected> <AboutPage /> </Protected>} />
       </Routes>
     </BrowserRouter>
   )

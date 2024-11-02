@@ -15,6 +15,7 @@ import Divider from '@mui/material/Divider';
 import { useNavigate } from 'react-router-dom';
 import 'remixicon/fonts/remixicon.css';
 import SearchBar from './Search';
+import Logo from '../assets/Logo.png';
 
 export default function NavBar() {
     const navigate = useNavigate();
@@ -23,9 +24,13 @@ export default function NavBar() {
     });
     const handleSearch = (game) => {
         console.log("Búsqueda de:", game);
-        navigate(`/games/${game.id}`);
+        navigate(`/game/${game.id}`);
     };
     const navItems = [
+        {
+            icon: <img src={Logo} style={{ width: '100px', height: '47px', objectFit: 'cover' }} />,
+            command: () => navigate("/"),
+        },
         {
             label: 'Playstation',
             icon: <i className="ri-playstation-line"></i>
@@ -118,6 +123,7 @@ export default function NavBar() {
                             startIcon={item.icon}
                             onClick={item.command}
                             sx={{
+                                maxHeight: '47px',
                                 color: 'white',
                                 textTransform: 'uppercase',
                                 bgcolor: purple[800],
