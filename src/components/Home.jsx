@@ -6,6 +6,7 @@ import CarouselComponent from "./Carousel";
 import { Container } from "@mui/material";
 import { authService } from "../services/token";
 import image from '../img/pslogo.png';
+import { fetchGames } from "../hooks/fetchGames";
 
 const API = import.meta.env.VITE_API;
 
@@ -15,38 +16,22 @@ export default function Home() {
   const [games, setGames] = useState([]);
 
   useEffect(() => {
-    const fetchGames = async () => {
-      const token = authService.getToken();
-      try {
-        const response = await fetch(`${API}/games`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            ...(token && { 'Authorization': `Bearer ${token}` })
-          },
-        });
+    const fetchData = async () => {
+      if (location.state?.filteredGames) {
+        setGames(location.state.filteredGames);
+      
+      } else {
+        const obtainGames = await fetchGames();
+        setGames(obtainGames);
 
-        const data = await response.json();
-        console.log("🚀 ~ data:", data);
-
-        if (!response.ok) {
-          authService.removeToken();
-          throw new Error(data.message || JSON.stringify(data));
-        }
-
-        setGames(data)
-
-      } catch (error) {
-        const errorMessage = error.message || JSON.stringify(error);
-        console.error("Mensaje de error:", errorMessage);
-      } finally {
-        console.log("Llegue al finally")
-      }
+      };
+    
     };
-    fetchGames();
-  }, []);
-  console.log('🚀 ~ Home ~ games:', games);
 
+    fetchData();
+
+  }, [location.state]);
+  
   return (
     <Container>
       <CarouselComponent />
