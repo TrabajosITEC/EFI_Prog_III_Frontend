@@ -67,6 +67,7 @@ export default function Home() {
             <GameCard
               id={game.id}
               title={game.title}
+              price={game.price}
               description={'short game description'}
               image={getImageByPlatform(game.platform)}
               plataform={game.platform}

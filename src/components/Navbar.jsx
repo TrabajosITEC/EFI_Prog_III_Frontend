@@ -1,4 +1,7 @@
 import { useState, useEffect } from 'react';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import ListIcon from '@mui/icons-material/List';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { AppBar, Toolbar, Button } from '@mui/material';
 import { purple } from '@mui/material/colors';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -14,8 +17,6 @@ import 'remixicon/fonts/remixicon.css';
 import SearchBar from './Search';
 
 import { navItems } from '../utils/navItems';
-import { sidebarItems } from '../utils/sidebarItems';
-import Logo from '../assets/Logo.png';
 import { authService } from "../services/token";
 
 export default function NavBar() {
@@ -47,29 +48,6 @@ export default function NavBar() {
         navigate(`/game/${game.id}`);
     };
 
-    const navItems = [
-        {
-            icon: <img src={Logo} style={{ width: '100px', height: '47px', objectFit: 'cover' }} />,
-            command: () => navigate("/"),
-        },
-        {
-            label: 'Playstation',
-            icon: <i className="ri-playstation-line"></i>
-        },
-        {
-            label: 'Xbox',
-            icon: <i className="ri-xbox-line"></i>
-        },
-        {
-            label: 'Nintendo',
-            icon: <i className="ri-switch-line"></i>
-        },
-        {
-            label: 'PC',
-            icon: <i className="ri-computer-line"></i>
-        }
-    ];
-
     const sidebarItems = [
         {
             label: 'Carrito',
@@ -94,11 +72,6 @@ export default function NavBar() {
         }
         setState({ ...state, [anchor]: open });
     };
-
-    const cerrarSesion = () => {
-        authService.removeToken();
-        navigate("/login")
-    }
 
     const list = () => (
         <List sx={{ bgcolor: purple[800], color: 'white', height: '100%', position: 'relative' }}>

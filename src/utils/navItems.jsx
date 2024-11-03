@@ -4,6 +4,7 @@ import logoGamix from '../assets/Logo.svg'
 export const navItems = [
   {
     icon: <img src={logoGamix} alt="Gamix" style={{height: '70px', width: '70px'}} />,
+    
 
   },
   {

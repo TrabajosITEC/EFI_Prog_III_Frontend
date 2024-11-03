@@ -218,7 +218,8 @@ const GameDetail = () => {
             <AddIcon style={{ color: purple[600] }} />
           </IconButton>
         </div>
-        <Button label="Add to Cart" icon="pi pi-shopping-cart" onClick={()=>handleAddToCart()} disabled={!game.available} className='bg-purple-800 mt-2 border-none' />
+        <Button label="Add to Cart" icon="pi pi-shopping-cart" 
+        onClick={()=>handleAddToCart()} disabled={!game.available} className='bg-purple-800 mt-2 border-none' />
       </Grid>
     </Grid>
   );

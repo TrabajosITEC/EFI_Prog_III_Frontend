@@ -2,9 +2,13 @@ import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
 import { purple } from '@mui/material/colors';
 
+import { useNavigate } from 'react-router-dom';
+
 import '../styles/GameCard.css';
 
-const GameCard = ({ title, price, image, plataform }) => {
+const GameCard = ({ id, title, price, image, platform }) => {
+  const navigate = useNavigate();
+
   return (
     <Card
       title={<h4 className='header-card-title'><b>{title}</b></h4>}
