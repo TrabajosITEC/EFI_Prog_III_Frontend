@@ -2,21 +2,22 @@ import NavBar from '../components/Navbar';
 import Footer from '../components/Footer';
 import PropTypes from 'prop-types';
 import { Box } from '@mui/material';
-import { grey } from '@mui/material/colors';
+
+import '../styles/MainLayout.css'
 
 export const MainLayOut = ({ children }) => {
   return (
     <>
       <NavBar />
       <Box
+        className='body-color'
         component="main"
         sx={{
           flexGrow: 1,
           minHeight: '100vh',
-          background: `linear-gradient(360deg, ${grey[900]}, ${grey[700]})`,
           display: 'flex',
           flexDirection: 'column',
-          paddingTop: '70px',
+          paddingBottom: '200px',
         }}
       >
         {children}

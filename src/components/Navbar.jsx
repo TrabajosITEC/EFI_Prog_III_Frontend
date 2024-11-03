@@ -1,9 +1,6 @@
 import { useState, useEffect } from 'react';
 import { AppBar, Toolbar, Button } from '@mui/material';
-import { grey, purple } from '@mui/material/colors';
-import ListIcon from '@mui/icons-material/List';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { purple } from '@mui/material/colors';
 import MenuIcon from '@mui/icons-material/Menu';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import List from '@mui/material/List';
@@ -15,6 +12,9 @@ import Divider from '@mui/material/Divider';
 import { useNavigate } from 'react-router-dom';
 import 'remixicon/fonts/remixicon.css';
 import SearchBar from './Search';
+
+import { navItems } from '../utils/navItems';
+import { sidebarItems } from '../utils/sidebarItems';
 import Logo from '../assets/Logo.png';
 import { authService } from "../services/token";
 
@@ -114,19 +114,19 @@ export default function NavBar() {
             ))}
             <Divider sx={{ bgcolor: 'white', my: 2 }} />
 
-            <ListItem
-                sx={{
-                    position: 'absolute',
-                    bottom: 0,
-                    width: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    bgcolor: grey[900],
-                    py: 2,
-                }}
-            >
-                <ListItemText primary={userName} sx={{ textAlign: 'center', color: 'white' }} />
+          <ListItem
+              sx={{
+                  position: 'absolute',
+                  bottom: 0,
+                  width: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  bgcolor: purple[900],
+                  py: 2,
+              }}
+          >
+            <ListItemText primary={userName} sx={{ textAlign: 'center', color: 'white' }} />
                 <Button
                     onClick={handleLogout}
                     sx={{ mt: 1, color: 'red' }}
@@ -134,37 +134,36 @@ export default function NavBar() {
                     Cerrar sesión
                 </Button>
             </ListItem>
-        </List>
-    );
+      </List>
+  );
 
-    return (
-        <AppBar position="fixed" sx={{ bgcolor: purple[800] }}>
-            <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                <div>
-                    {navItems.map((item, index) => (
-                        <Button
-                            key={index}
-                            startIcon={item.icon}
-                            onClick={item.command}
-                            sx={{
-                                maxHeight: '47px',
-                                color: 'white',
-                                textTransform: 'uppercase',
-                                bgcolor: purple[800],
-                                opacity: 0.8,
-                                borderRadius: 1,
-                                mr: 1,
-                                '&:hover': {
-                                    bgcolor: purple[600],
-                                    color: 'white',
-                                    opacity: 1,
-                                },
-                            }}
-                        >
-                            {item.label}
-                        </Button>
-                    ))}
-                </div>
+  return (
+    <AppBar position="fixed" sx={{ bgcolor: 'rgba(0, 0, 0, 0.8)' }}>
+      <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        <div>
+          {navItems.map((item, index) => (
+            <Button
+              key={index}
+              startIcon={item.icon}
+              onClick={() => obtainGames(item.command, item.label)}
+              sx={{
+                color: 'white',
+                textTransform: 'uppercase',
+                bgcolor: 'rgba(0, 0, 0, 0)',
+                opacity: 0.8,
+                borderRadius: 1,
+                mr: 1,
+                '&:hover': {
+                  bgcolor: 'rgba(0, 0, 0, 0.4)',
+                  color: 'white',
+                  opacity: 1,
+                },
+              }}
+              >
+              {item.label}
+            </Button>
+          ))}
+        </div>
 
                 <SearchBar onSearch={handleSearch} />
 

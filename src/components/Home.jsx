@@ -1,9 +1,15 @@
 import { useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
-import GameCard from "./GameCard";
-import CarouselComponent from "./Carousel";
-import { Grid2 as Grid, Container } from "@mui/material";
+
+import { Grid2 as Grid } from "@mui/material";
+import { Container } from "@mui/material";
+
 import { authService } from "../services/token";
+import CarouselComponent from "./Carousel";
+import GameCard from "./GameCard";
+import { fetchGames } from "../hooks/fetchGames";
+
+import image from '../img/pslogo.png';
 import pcImage from '../img/pc.png';
 import nintendoImage from '../img/nintendo.png';
 import xboxImage from '../img/xbox.png';
@@ -18,38 +24,22 @@ export default function Home() {
   const [games, setGames] = useState([]);
 
   useEffect(() => {
-    const fetchGames = async () => {
-      const token = authService.getToken();
-      try {
-        const response = await fetch(`${API}/games`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            ...(token && { 'Authorization': `Bearer ${token}` })
-          },
-        });
+    const fetchData = async () => {
+      if (location.state?.filteredGames) {
+        setGames(location.state.filteredGames);
+      
+      } else {
+        const obtainGames = await fetchGames();
+        setGames(obtainGames);
 
-        const data = await response.json();
-        console.log("🚀 ~ fetchGames ~ data:", data)
-
-        if (!response.ok) {
-          authService.removeToken();
-          throw new Error(data.message || JSON.stringify(data));
-        }
-
-        setGames(data)
-        
-
-      } catch (error) {
-        const errorMessage = error.message || JSON.stringify(error);
-        console.error("Mensaje de error:", errorMessage);
-      } finally {
-        console.log("Llegue al finally")
-      }
+      };
+    
     };
-    fetchGames();
-  }, []);
 
+    fetchData();
+
+  }, [location.state]);
+  
   const getImageByPlatform = (platform) => {
     switch (platform) {
       case 'PC':
@@ -71,7 +61,7 @@ export default function Home() {
   return (
     <Container>
       <CarouselComponent />
-      <Grid container spacing={2} sx={{ mt: 5, justifyContent: 'space-between' }}>
+      <Grid container spacing={2} sx={{ marginTop: '150px', justifyContent: 'space-between' }}>
         {games.slice(0, 4).map((game) => (
           <Grid item='true' xs={12} sm={6} md={4} lg={3} key={game.id}>
             <GameCard
@@ -79,7 +69,7 @@ export default function Home() {
               title={game.title}
               description={'short game description'}
               image={getImageByPlatform(game.platform)}
-              platform={game.platform}
+              plataform={game.platform}
             />
           </Grid>
         ))}
