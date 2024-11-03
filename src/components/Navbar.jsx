@@ -25,7 +25,6 @@ export default function NavBar() {
   });
 
   const handleSearch = (game) => {
-    /*  console.log("Búsqueda de:", game); */
     navigate(`/games/${game.id}`);
   
   };
@@ -41,10 +40,13 @@ export default function NavBar() {
   };
 
   const obtainGames = async(response, label) => {
-    const games = await response();
-    const filteredGames = games.filter(game => game.platform === label);
+    if (typeof response === 'function') {
+      const games = await response();
+      const filteredGames = games.filter(game => game.platform === label);
+  
+      navigate("/", { state: { filteredGames } });
 
-    navigate("/", { state: { filteredGames } });
+    }
 
   };
   
@@ -88,7 +90,7 @@ export default function NavBar() {
   );
 
   return (
-    <AppBar position="fixed" sx={{ bgcolor: purple[800] }}>
+    <AppBar position="fixed" sx={{ bgcolor: 'rgba(0, 0, 0, 0.8)' }}>
       <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <div>
           {navItems.map((item, index) => (
@@ -99,12 +101,12 @@ export default function NavBar() {
               sx={{
                 color: 'white',
                 textTransform: 'uppercase',
-                bgcolor: purple[800],
+                bgcolor: 'rgba(0, 0, 0, 0)',
                 opacity: 0.8,
                 borderRadius: 1,
                 mr: 1,
                 '&:hover': {
-                  bgcolor: purple[600],
+                  bgcolor: 'rgba(0, 0, 0, 0.4)',
                   color: 'white',
                   opacity: 1,
                 },
