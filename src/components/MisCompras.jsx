@@ -1,21 +1,17 @@
 import { useState, useEffect } from 'react';
-import { Column } from 'primereact/column';
-import { DataTable } from 'primereact/datatable';
-import { authService } from "../services/token";
+import { Box, Grid2 as Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Paper } from '@mui/material';
 import { grey, purple } from '@mui/material/colors';
-import { Grid2 as Grid } from '@mui/material';
+import { authService } from "../services/token";
 
 const API = import.meta.env.VITE_API;
 
 export default function Tabla() {
   const [products, setProducts] = useState([]);
-  const UserId = authService.getUserId()
-  console.log("🚀 ~ Tabla ~ UserId:", UserId)
+  const UserId = authService.getUserId();
 
   useEffect(() => {
     const fetchCompras = async () => {
       const token = authService.getToken();
-      console.log("🚀 ~ fetchCompras ~ token:", token)
       try {
         const response = await fetch(`${API}/purchases/${UserId}`, {
           method: "GET",
@@ -25,8 +21,7 @@ export default function Tabla() {
           },
         });
 
-        const data = await response.json()
-        console.log("🚀 ~ fetchCompras ~ data:", data)
+        const data = await response.json();
 
         if (!response.ok) {
           authService.removeToken();
@@ -34,79 +29,69 @@ export default function Tabla() {
         }
 
         setProducts(obtenerProductosCompras(data));
-
       } catch (error) {
-        const errorMessage = error.message || JSON.stringify(error);
-        console.error("Mensaje de error:", errorMessage);
-      } finally {
-        console.log("Llegue al finally")
+        console.error("Mensaje de error:", error.message || JSON.stringify(error));
       }
     };
-    fetchCompras()
+    fetchCompras();
   }, [UserId]);
 
-
-  console.log("🚀 ~ antes de la funcion products:", products)
   function obtenerProductosCompras(products) {
-    const result = [];
-
-    products.forEach(purchase => {
-      purchase.PurchaseDetails.forEach(detail => {
-        result.push({
-          date: purchase.date,
-          title: detail.Game.title,
-          price: detail.Game.price,
-          quantity: detail.quantity
-        });
-      });
-    });
-
-    return result;
+    return products.flatMap((purchase) =>
+      purchase.PurchaseDetails.map((detail) => ({
+        date: purchase.date,
+        title: detail.Game.title,
+        price: detail.Game.price,
+        quantity: detail.quantity,
+      }))
+    );
   }
-
-
 
   const formatCurrency = (value) => {
     return value.toLocaleString('en-US', { style: 'currency', currency: 'ARS' });
   };
 
-  const priceBodyTemplate = (products) => {
-    return formatCurrency(products.price);
-  };
-
-  const header = (
-    <div className="flex flex-wrap align-items-center justify-content-between gap-2">
-      <span className="text-xl text-900 font-bold">Mis Compras</span>
-    </div>
-  );
-
-  const footer = `Compras realizadas: ${products ? products.length : 0}.`;
-
   return (
-    <Grid
-      container
-      justifyContent="center"
-      alignItems="center"
-      style={{
-        width: '1000px',
-        padding: '2rem',
-        margin: '50px auto',
-        borderRadius: '16px',
-        border: `2px solid ${purple[800]}`,
-        backgroundColor: grey[800]
-      }}
-    >
-      <DataTable value={products} header={header} footer={footer} tableStyle={{ minWidth: '60rem' }}>
-        <Column field="date" style={{ backgroundColor: grey[500] }} header="Fecha"></Column>
-        <Column field="title" style={{ backgroundColor: grey[500] }} header="Producto"></Column>
-        <Column field="price" style={{ backgroundColor: grey[500] }} header="Precio" body={priceBodyTemplate}></Column>
-        <Column field="quantity" style={{ backgroundColor: grey[500] }} header="Cantidad"></Column>
-
-        {/* <p>{products}</p> */}
-        {/* <Column field="TotalPagado" header="Total Pagado" body={priceBodyTemplate}></Column> */}
-      </DataTable>
+    <Grid container justifyContent="center" alignItems="center" style={{ minHeight: '100vh' }}>
+      <TableContainer
+        component={Paper}
+        style={{
+          maxWidth: 1000,
+          backgroundColor: grey[800],
+          borderRadius: 8,
+          border: `2px solid ${purple[800]}`,
+          overflow: 'hidden',
+        }}
+      >
+        <Box p={2}>
+          <Typography variant="h5" align="center" style={{ color: 'white', fontWeight: 'bold' }}>
+            Mis Compras
+          </Typography>
+        </Box>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell style={{ color: 'white', fontWeight: 'bold' }}>Fecha</TableCell>
+              <TableCell style={{ color: 'white', fontWeight: 'bold' }}>Producto</TableCell>
+              <TableCell style={{ color: 'white', fontWeight: 'bold' }}>Precio</TableCell>
+              <TableCell style={{ color: 'white', fontWeight: 'bold' }}>Cantidad</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {products.map((product, index) => (
+              <TableRow key={index}>
+                <TableCell style={{ color: 'white' }}>{product.date}</TableCell>
+                <TableCell style={{ color: 'white' }}>{product.title}</TableCell>
+                <TableCell style={{ color: 'white' }}>{formatCurrency(product.price)}</TableCell>
+                <TableCell style={{ color: 'white' }}>{product.quantity}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+        <Box p={2} textAlign="center" style={{ color: 'white' }}>
+          Compras realizadas: {products.length}
+        </Box>
+      </TableContainer>
     </Grid>
   );
 }
-
-

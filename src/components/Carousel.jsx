@@ -1,8 +1,8 @@
-import React from 'react';
 import { Carousel } from 'primereact/carousel';
-import image1 from '../img/gem1.jpeg';
-import image2 from '../img/gem2.jpeg';
-import image3 from '../img/gem3.jpeg';
+import image1 from '../img/dalle.webp';
+import image2 from '../img/dalle2.webp';
+import image3 from '../img/dalle3.webp';
+
 import './Carousel.css';
 
 const CarouselComponent = () => {

@@ -1,6 +1,6 @@
-import * as React from 'react';
+import { useState, useEffect } from 'react';
 import { AppBar, Toolbar, Button } from '@mui/material';
-import { purple } from '@mui/material/colors';
+import { grey, purple } from '@mui/material/colors';
 import ListIcon from '@mui/icons-material/List';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -16,16 +16,37 @@ import { useNavigate } from 'react-router-dom';
 import 'remixicon/fonts/remixicon.css';
 import SearchBar from './Search';
 import Logo from '../assets/Logo.png';
+import { authService } from "../services/token";
 
 export default function NavBar() {
     const navigate = useNavigate();
-    const [state, setState] = React.useState({
+    const [state, setState] = useState({
         right: false,
     });
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [userName, setUserName] = useState('');
+    const [userId, setUserId] = useState('');
+
+    useEffect(() => {
+        const authenticated = authService.isAuthenticated();
+        setIsAuthenticated(authenticated);
+        if (authenticated) {
+            setUserId(authService.getUserId());
+            setUserName(authService.getUserName() || 'Usuario');
+        }
+    }, []);
+
+    const handleLogout = () => {
+        authService.removeToken();
+        setIsAuthenticated(false);
+        navigate("/login");
+    };
+
     const handleSearch = (game) => {
         console.log("Búsqueda de:", game);
         navigate(`/game/${game.id}`);
     };
+
     const navItems = [
         {
             icon: <img src={Logo} style={{ width: '100px', height: '47px', objectFit: 'cover' }} />,
@@ -63,7 +84,7 @@ export default function NavBar() {
         {
             label: 'Mi Perfil',
             icon: <AccountCircleIcon />,
-            command: () => navigate("/profile"),
+            command: () => navigate(`user/profile`),
         },
     ];
 
@@ -96,16 +117,14 @@ export default function NavBar() {
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
-                    bgcolor: purple[900],
+                    bgcolor: grey[900],
                     py: 2,
                 }}
             >
-                <ListItemText primary="NombreUsuario" sx={{ textAlign: 'center', color: 'white' }} />
+                <ListItemText primary={userName} sx={{ textAlign: 'center', color: 'white' }} />
                 <Button
-                    variant="contained"
-                    color="secondary"
-                    onClick={() => { /* Lógica para cerrar sesión */ }}
-                    sx={{ mt: 1 }}
+                    onClick={handleLogout}
+                    sx={{ mt: 1, color: 'red' }}
                 >
                     Cerrar sesión
                 </Button>
@@ -145,9 +164,31 @@ export default function NavBar() {
                 <SearchBar onSearch={handleSearch} />
 
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <Button onClick={toggleDrawer('right', true)}>
-                        <MenuIcon sx={{ color: 'white' }} />
-                    </Button>
+                    {isAuthenticated ? (
+                        <Button onClick={toggleDrawer('right', true)}>
+                            <MenuIcon sx={{ color: 'white' }} />
+                        </Button>
+                    ) : (
+                        <Button
+                            onClick={() => navigate("/login")}
+                            sx={{
+                                maxHeight: '47px',
+                                color: 'white',
+                                textTransform: 'uppercase',
+                                bgcolor: purple[800],
+                                opacity: 0.8,
+                                borderRadius: 1,
+                                mr: 1,
+                                '&:hover': {
+                                    bgcolor: purple[600],
+                                    color: 'white',
+                                    opacity: 1,
+                                },
+                            }}
+                        >
+                            Iniciar sesión / Registrarse
+                        </Button>
+                    )}
                     <SwipeableDrawer
                         anchor="right"
                         open={state['right']}
