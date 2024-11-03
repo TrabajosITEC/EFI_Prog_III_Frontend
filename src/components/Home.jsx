@@ -30,6 +30,7 @@ export default function Home() {
         });
 
         const data = await response.json();
+        console.log("🚀 ~ fetchGames ~ data:", data)
 
         if (!response.ok) {
           authService.removeToken();
@@ -37,6 +38,7 @@ export default function Home() {
         }
 
         setGames(data)
+        
 
       } catch (error) {
         const errorMessage = error.message || JSON.stringify(error);

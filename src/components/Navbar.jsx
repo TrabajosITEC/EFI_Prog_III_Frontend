@@ -16,6 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import 'remixicon/fonts/remixicon.css';
 import SearchBar from './Search';
 import Logo from '../assets/Logo.png';
+import { authService } from "../services/token";
 
 export default function NavBar() {
     const navigate = useNavigate();
@@ -74,6 +75,11 @@ export default function NavBar() {
         setState({ ...state, [anchor]: open });
     };
 
+    const cerrarSesion = () => {
+        authService.removeToken();
+        navigate("/login")
+    }
+
     const list = () => (
         <List sx={{ bgcolor: purple[800], color: 'white', height: '100%', position: 'relative' }}>
             {sidebarItems.map((item, index) => (
@@ -100,11 +106,11 @@ export default function NavBar() {
                     py: 2,
                 }}
             >
-                <ListItemText primary="NombreUsuario" sx={{ textAlign: 'center', color: 'white' }} />
+                <ListItemText primary={authService.getUserName()} sx={{ textAlign: 'center', color: 'white' }} />
                 <Button
                     variant="contained"
                     color="secondary"
-                    onClick={() => { /* Lógica para cerrar sesión */ }}
+                    onClick={() => cerrarSesion()}
                     sx={{ mt: 1 }}
                 >
                     Cerrar sesión

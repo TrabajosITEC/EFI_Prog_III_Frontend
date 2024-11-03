@@ -16,6 +16,7 @@ import { grey, purple } from '@mui/material/colors';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove'
 import { Button } from 'primereact/button';
+import {  useNavigate } from 'react-router-dom';
 
 const API = import.meta.env.VITE_API;
 
@@ -23,6 +24,7 @@ const GameDetail = () => {
   const { id } = useParams();
   const [game, setGame] = useState(null);
   const [quantity, setQuantity] = useState(1);
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchGame = async () => {
@@ -66,8 +68,33 @@ const GameDetail = () => {
     setQuantity((prev) => Math.max(1, prev - 1));
   };
 
-  const handleAddToCart = () => {
-    console.log(`Added ${quantity} of ${game.title} to cart.`);
+  const handleAddToCart = async () => {
+    const token = authService.getToken();
+    const userId = authService.getUserId()
+    const gameId = game.id
+    const quantit = quantity
+    console.log(userId, gameId, quantit)
+
+    try {
+      const response = await fetch(`${API}/cart/add`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token && { 'Authorization': `Bearer ${token}` })
+        },
+        body: JSON.stringify({ userId, gameId, quantity }),
+    });
+
+    if (!response.ok) {
+        authService.removeToken();
+            const data = await response.json();
+            throw new Error(data.message || JSON.stringify(data));
+        }
+    
+    navigate("/cart")
+    } catch (error) {
+        console.error("Mensaje de error:", error.message || JSON.stringify(error));
+    }
   };
 
   const getImageByPlatform = (platform) => {
@@ -191,7 +218,7 @@ const GameDetail = () => {
             <AddIcon style={{ color: purple[600] }} />
           </IconButton>
         </div>
-        <Button label="Add to Cart" icon="pi pi-shopping-cart" onClick={handleAddToCart} disabled={!game.available} className='bg-purple-800 mt-2 border-none' />
+        <Button label="Add to Cart" icon="pi pi-shopping-cart" onClick={()=>handleAddToCart()} disabled={!game.available} className='bg-purple-800 mt-2 border-none' />
       </Grid>
     </Grid>
   );

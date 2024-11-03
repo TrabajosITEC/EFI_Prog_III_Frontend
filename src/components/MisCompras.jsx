@@ -26,14 +26,16 @@ export default function Tabla() {
         });
 
         const data = await response.json()
-        console.log("🚀 ~ fetchCompras ~ data:", data)
-
-        if (!response.ok) {
+        console.log("🚀 response.ok:", response.ok)
+        if (response.status === 404) {
+          console.log(data.message);
+        } else if (!response.ok) {
           authService.removeToken();
           throw new Error(data.message || JSON.stringify(data));
         }
-
+        
         setProducts(obtenerProductosCompras(data));
+        
 
       } catch (error) {
         const errorMessage = error.message || JSON.stringify(error);
@@ -60,6 +62,8 @@ export default function Tabla() {
         });
       });
     });
+
+    result.reverse()
 
     return result;
   }
