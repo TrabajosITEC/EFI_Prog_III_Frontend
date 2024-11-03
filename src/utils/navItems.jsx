@@ -3,12 +3,18 @@ import logoGamix from '../assets/Logo.svg'
 
 export const navItems = [
   {
-    icon: <img src={logoGamix} alt="Gamix" style={{height: '70px', width: '70px'}} />,
+    id: 'Home',
+    icon: <img src={logoGamix} alt="Gamix" style={{height: '70px', width: '70px'}} />, 
+    command: async () => {
+      const games = await fetchGames();
+      return games;
     
+    }
 
   },
   {
-    label: 'PS4',
+    id: 'Playstation',
+    label: 'Playstation',
     icon: <i className="ri-playstation-line"></i>,
     command: async () => {
       const games = await fetchGames();
@@ -17,6 +23,7 @@ export const navItems = [
     }
   },
   {
+    id: 'XBOX',
     label: 'XBOX',
     icon: <i className="ri-xbox-line"></i>,
     command: async () => {

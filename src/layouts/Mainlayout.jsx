@@ -13,11 +13,13 @@ export const MainLayOut = ({ children }) => {
         className='body-color'
         component="main"
         sx={{
+          overflowX: 'hidden',
           flexGrow: 1,
           minHeight: '100vh',
           display: 'flex',
           flexDirection: 'column',
           paddingBottom: '200px',
+          paddingTop: '100px'
         }}
       >
         {children}

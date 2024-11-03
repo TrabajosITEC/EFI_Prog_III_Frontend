@@ -48,10 +48,7 @@ export default function Home() {
         return nintendoImage;
       case 'XBOX':
         return xboxImage;
-      case 'PS2':
-      case 'PS3':
-      case 'PS4':
-      case 'PS5':
+      case 'Playstation':
         return psImage;
       default:
         return defaultImage;

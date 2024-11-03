@@ -110,6 +110,28 @@ export default function NavBar() {
       </List>
   );
 
+  const obtainGames = async(response, label, id) => {
+    if (typeof response === 'function') {
+      const games = await response();
+    
+      if (id === 'Home') {
+        const filteredGames = games;
+
+        console.log(filteredGames);
+        
+        navigate("/", { state: { filteredGames } });
+        
+      } else {
+        const filteredGames = games.filter(game => game.platform === label);
+
+        navigate("/", { state: { filteredGames } });
+      
+      };
+  
+    };
+
+  };
+
   return (
     <AppBar position="fixed" sx={{ bgcolor: 'rgba(0, 0, 0, 0.8)' }}>
       <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -118,7 +140,7 @@ export default function NavBar() {
             <Button
               key={index}
               startIcon={item.icon}
-              onClick={() => obtainGames(item.command, item.label)}
+              onClick={() => obtainGames(item.command, item.label, item.id)}
               sx={{
                 color: 'white',
                 textTransform: 'uppercase',
