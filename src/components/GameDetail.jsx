@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import {
   Typography,
   Grid2 as Grid,
@@ -16,7 +15,7 @@ import { grey, purple } from '@mui/material/colors';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove'
 import { Button } from 'primereact/button';
-import {  useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 const API = import.meta.env.VITE_API;
 
@@ -83,32 +82,29 @@ const GameDetail = () => {
           ...(token && { 'Authorization': `Bearer ${token}` })
         },
         body: JSON.stringify({ userId, gameId, quantity }),
-    });
+      });
 
-    if (!response.ok) {
+      if (!response.ok) {
         authService.removeToken();
-            const data = await response.json();
-            throw new Error(data.message || JSON.stringify(data));
-        }
-    
-    navigate("/cart")
+        const data = await response.json();
+        throw new Error(data.message || JSON.stringify(data));
+      }
+
+      navigate("/cart")
     } catch (error) {
-        console.error("Mensaje de error:", error.message || JSON.stringify(error));
+      console.error("Mensaje de error:", error.message || JSON.stringify(error));
     }
   };
 
   const getImageByPlatform = (platform) => {
-    switch (platform) {
+    switch (platform.toUpperCase()) {
       case 'PC':
         return pcImage;
       case 'NINTENDO':
         return nintendoImage;
       case 'XBOX':
         return xboxImage;
-      case 'PS2':
-      case 'PS3':
-      case 'PS4':
-      case 'PS5':
+      case 'PLAYSTATION':
         return psImage;
       default:
         return defaultImage;
@@ -124,8 +120,10 @@ const GameDetail = () => {
       container
       justifyContent="center"
       alignItems="center"
+      direction={{ xs: "column", sm: "row" }} // Cambia la dirección basada en el tamaño de pantalla
       style={{
-        width: '800px',
+        maxWidth: '800px',
+        width: '100%',
         padding: '2rem',
         margin: '0 auto',
         borderRadius: '16px',
@@ -218,8 +216,8 @@ const GameDetail = () => {
             <AddIcon style={{ color: purple[600] }} />
           </IconButton>
         </div>
-        <Button label="Add to Cart" icon="pi pi-shopping-cart" 
-        onClick={()=>handleAddToCart()} disabled={!game.available} className='bg-purple-800 mt-2 border-none' />
+        <Button label="Add to Cart" icon="pi pi-shopping-cart"
+          onClick={() => handleAddToCart()} disabled={!game.available} className='bg-purple-800 mt-2 border-none' />
       </Grid>
     </Grid>
   );

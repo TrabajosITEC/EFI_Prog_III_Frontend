@@ -3,10 +3,10 @@ export const authService = {
     setToken(token) {
         try {
             const decodedToken = jwtDecode(token);
-            
+
             localStorage.setItem('authToken', token);
             localStorage.setItem('tokenData', JSON.stringify(decodedToken));
-            
+
             return decodedToken;
         } catch (error) {
             console.error('Error al decodificar el token:', error);
@@ -21,7 +21,7 @@ export const authService = {
 
         try {
             const decodedToken = jwtDecode(token);
-            
+
             if (decodedToken.exp * 1000 < Date.now()) {
                 this.removeToken();
                 return null;
@@ -37,7 +37,7 @@ export const authService = {
     getTokenInfo() {
         const token = this.getToken();
         if (!token) return null;
-        
+
         try {
             return jwtDecode(token);
         } catch {
@@ -47,7 +47,7 @@ export const authService = {
 
     getUserId() {
         const tokenInfo = this.getTokenInfo();
-        return tokenInfo?.id || null; 
+        return tokenInfo?.id || null;
     },
 
     getUserName() {

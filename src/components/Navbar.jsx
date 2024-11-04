@@ -40,7 +40,7 @@ export default function NavBar() {
     const handleLogout = () => {
         authService.removeToken();
         setIsAuthenticated(false);
-        navigate("/login");
+        navigate("/");
     };
 
     const handleSearch = (game) => {
@@ -87,19 +87,19 @@ export default function NavBar() {
             ))}
             <Divider sx={{ bgcolor: 'white', my: 2 }} />
 
-          <ListItem
-              sx={{
-                  position: 'absolute',
-                  bottom: 0,
-                  width: '100%',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  bgcolor: purple[900],
-                  py: 2,
-              }}
-          >
-            <ListItemText primary={userName} sx={{ textAlign: 'center', color: 'white' }} />
+            <ListItem
+                sx={{
+                    position: 'absolute',
+                    bottom: 0,
+                    width: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    bgcolor: purple[900],
+                    py: 2,
+                }}
+            >
+                <ListItemText primary={userName} sx={{ textAlign: 'center', color: 'white' }} />
                 <Button
                     onClick={handleLogout}
                     sx={{ mt: 1, color: 'red' }}
@@ -107,58 +107,58 @@ export default function NavBar() {
                     Cerrar sesión
                 </Button>
             </ListItem>
-      </List>
-  );
+        </List>
+    );
 
-  const obtainGames = async(response, label, id) => {
-    if (typeof response === 'function') {
-      const games = await response();
-    
-      if (id === 'Home') {
-        const filteredGames = games;
+    const obtainGames = async (response, label, id) => {
+        if (typeof response === 'function') {
+            const games = await response();
 
-        console.log(filteredGames);
-        
-        navigate("/", { state: { filteredGames } });
-        
-      } else {
-        const filteredGames = games.filter(game => game.platform === label);
+            if (id === 'Home') {
+                const filteredGames = games;
 
-        navigate("/", { state: { filteredGames } });
-      
-      };
-  
+                console.log(filteredGames);
+
+                navigate("/", { state: { filteredGames } });
+
+            } else {
+                const filteredGames = games.filter(game => game.platform === label);
+
+                navigate("/", { state: { filteredGames } });
+
+            };
+
+        };
+
     };
 
-  };
-
-  return (
-    <AppBar position="fixed" sx={{ bgcolor: 'rgba(0, 0, 0, 0.8)' }}>
-      <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        <div>
-          {navItems.map((item, index) => (
-            <Button
-              key={index}
-              startIcon={item.icon}
-              onClick={() => obtainGames(item.command, item.label, item.id)}
-              sx={{
-                color: 'white',
-                textTransform: 'uppercase',
-                bgcolor: 'rgba(0, 0, 0, 0)',
-                opacity: 0.8,
-                borderRadius: 1,
-                mr: 1,
-                '&:hover': {
-                  bgcolor: 'rgba(0, 0, 0, 0.4)',
-                  color: 'white',
-                  opacity: 1,
-                },
-              }}
-              >
-              {item.label}
-            </Button>
-          ))}
-        </div>
+    return (
+        <AppBar position="fixed" sx={{ bgcolor: 'rgba(0, 0, 0, 0.8)' }}>
+            <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                <div>
+                    {navItems.map((item, index) => (
+                        <Button
+                            key={index}
+                            startIcon={item.icon}
+                            onClick={() => obtainGames(item.command, item.label, item.id)}
+                            sx={{
+                                color: 'white',
+                                textTransform: 'uppercase',
+                                bgcolor: 'rgba(0, 0, 0, 0)',
+                                opacity: 0.8,
+                                borderRadius: 1,
+                                mr: 1,
+                                '&:hover': {
+                                    bgcolor: 'rgba(0, 0, 0, 0.4)',
+                                    color: 'white',
+                                    opacity: 1,
+                                },
+                            }}
+                        >
+                            {item.label}
+                        </Button>
+                    ))}
+                </div>
 
                 <SearchBar onSearch={handleSearch} />
 

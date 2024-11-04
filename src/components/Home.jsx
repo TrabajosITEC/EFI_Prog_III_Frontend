@@ -1,22 +1,14 @@
 import { useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
-
-import { Grid2 as Grid } from "@mui/material";
-import { Container } from "@mui/material";
-
-import { authService } from "../services/token";
+import { Container, Grid2 as Grid } from "@mui/material";
 import CarouselComponent from "./Carousel";
 import GameCard from "./GameCard";
 import { fetchGames } from "../hooks/fetchGames";
-
-import image from '../img/pslogo.png';
 import pcImage from '../img/pc.png';
 import nintendoImage from '../img/nintendo.png';
 import xboxImage from '../img/xbox.png';
 import psImage from '../img/pslogo.png';
 import defaultImage from '../img/green.png';
-
-const API = import.meta.env.VITE_API;
 
 export default function Home() {
   const location = useLocation();
@@ -27,28 +19,25 @@ export default function Home() {
     const fetchData = async () => {
       if (location.state?.filteredGames) {
         setGames(location.state.filteredGames);
-      
       } else {
         const obtainGames = await fetchGames();
         setGames(obtainGames);
-
       };
-    
     };
 
     fetchData();
 
   }, [location.state]);
-  
+
   const getImageByPlatform = (platform) => {
-    switch (platform) {
+    switch (platform.toUpperCase()) {
       case 'PC':
         return pcImage;
       case 'NINTENDO':
         return nintendoImage;
       case 'XBOX':
         return xboxImage;
-      case 'Playstation':
+      case 'PLAYSTATION':
         return psImage;
       default:
         return defaultImage;
