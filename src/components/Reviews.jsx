@@ -4,60 +4,104 @@ import { Rating } from '@mui/material';
 import { authService } from "../services/token";
 import { useParams } from 'react-router-dom';
 import { grey, purple } from '@mui/material/colors';
-
+import { useNavigate } from 'react-router-dom';
 const API = import.meta.env.VITE_API;
 
 const Reviews = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const [reviews, setReviews] = useState([]);
-  const [users, setUsers] = useState({}); // Estado para almacenar los nombres de usuario
+  // const [users, setUsers] = useState({}); // Estado para almacenar los nombres de usuario
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
   const isAuthenticated = authService.isAuthenticated();
   const userRole = authService.getUserRole();
   const userId = authService.getUserId();
 
-  useEffect(() => {
-    const fetchReviews = async () => {
-      const token = authService.getToken();
-      try {
-        const response = await fetch(`${API}/reviews?game_id=${id}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            ...(token && { 'Authorization': `Bearer ${token}` })
-          },
-        });
-        const data = await response.json();
-        setReviews(data);
+  // useEffect(() => {
+  //   const fetchReviews = async () => {
+  //     const token = authService.getToken();
+  //     try {
+  //       const response = await fetch(`${API}/reviews?game_id=${id}`, {
+  //         method: "GET",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           ...(token && { 'Authorization': `Bearer ${token}` })
+  //         },
+  //       });
+  //       const data = await response.json();
+  //       setReviews(data);
 
 
-        const userIds = [...new Set(data.map(review => review.user_id))];
+  //       const userIds = [...new Set(data.map(review => review.user_id))];
 
-        const userResponses = await Promise.all(userIds.map(userId =>
-          fetch(`${API}/user/${userId}`, {
+  //       const userResponses = await Promise.all(userIds.map(userId =>
+  //         fetch(`${API}/user/${userId}`, {
+  //           method: "GET",
+  //           headers: {
+  //             "Content-Type": "application/json",
+  //             ...(token && { 'Authorization': `Bearer ${token}` })
+  //           },
+  //         })
+  //       ));
+
+  //       const usersData = await Promise.all(userResponses.map(res => res.json()));
+  //       const usersMap = usersData.reduce((acc, user) => {
+  //         acc[user.id] = user.name;
+  //         return acc;
+  //       }, {});
+
+  //       setUsers(usersMap);
+  //     } catch (error) {
+  //       console.error("Error fetching reviews:", error);
+  //     }
+  //   };
+
+  //   fetchReviews();
+  // }, [id]);
+
+  // export const useGameReviews = (gameId) => {
+    // const [reviews, setReviews] = useState([]);
+
+  
+    useEffect(() => {
+      const fetchReviews = async () => {
+        const token = authService.getToken();
+
+        try {
+          const response = await fetch(`${API}/reviews/games/${id}`, {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
               ...(token && { 'Authorization': `Bearer ${token}` })
             },
-          })
-        ));
-
-        const usersData = await Promise.all(userResponses.map(res => res.json()));
-        const usersMap = usersData.reduce((acc, user) => {
-          acc[user.id] = user.name;
-          return acc;
-        }, {});
-
-        setUsers(usersMap);
-      } catch (error) {
-        console.error("Error fetching reviews:", error);
+          });
+  
+          const data = await response.json();
+  
+          if (response.status === 404) {
+            console.log(data.message);
+            setReviews([]);
+          } else if (!response.ok) {
+            if (response.status === 401) {
+              authService.removeToken();
+            }
+            throw new Error(data.message || JSON.stringify(data));
+          } else {
+            console.log(data)
+            setReviews(data.reviews);
+          }
+        } catch (error) {
+          console.error("Error al cargar reviews:", error.message || JSON.stringify(error));
+        } finally {
+          console.log("Llegue al finaly")
+        }
+      };
+  
+      if (id) {
+        fetchReviews();
       }
-    };
-
-    fetchReviews();
-  }, [id]);
+    }, [id]);
 
   const handleSubmitReview = async () => {
     const token = authService.getToken();
@@ -83,6 +127,8 @@ const Reviews = () => {
       } else {
         console.error("Failed to submit review:", newReview);
       }
+      
+      navigate(`/game/${id}`)
     } catch (error) {
       console.error("Error posting review:", error);
     }
@@ -109,10 +155,10 @@ const Reviews = () => {
       {reviews.map((review) => (
         <Paper key={review.id} elevation={3} sx={{ padding: 2, marginBottom: 2, backgroundColor: grey[800], border: `2px solid ${purple[800]}` }}>
           <Typography variant="body1" sx={{ color: 'white' }}>
-            <strong>{users[review.user_id] || "Unknown"}</strong>
+            <strong>{ `El que hizo el comentario es:  ${review.User.userName}` }</strong>
           </Typography>
           <Rating value={review.rating} readOnly />
-          <Typography variant="body2" sx={{ color: 'white' }}>{review.comment}</Typography>
+          <Typography variant="body2" sx={{ color: 'white' }}>{`El comentario es: ${review.comment}`}</Typography>
           {userRole === 'admin' && (
             <Button
               variant="contained"
