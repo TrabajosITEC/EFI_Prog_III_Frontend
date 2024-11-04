@@ -62,7 +62,7 @@ export default function NavBar() {
         {
             label: 'Mi Perfil',
             icon: <AccountCircleIcon />,
-            command: () => navigate(`user/profile`),
+            command: () => navigate(`/user/profile`),
         },
     ];
 

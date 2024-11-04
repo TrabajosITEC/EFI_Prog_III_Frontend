@@ -120,9 +120,8 @@ const GameDetail = () => {
       container
       justifyContent="center"
       alignItems="center"
-      direction={{ xs: "column", sm: "row" }} // Cambia la dirección basada en el tamaño de pantalla
       style={{
-        maxWidth: '800px',
+        maxWidth: '1000px',
         width: '100%',
         padding: '2rem',
         margin: '0 auto',

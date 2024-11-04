@@ -55,6 +55,11 @@ export const authService = {
         return tokenInfo?.username || null;
     },
 
+    getUserEmail() {
+        const tokenInfo = this.getTokenInfo();
+        return tokenInfo?.email || null;
+    },
+
     getUserRole() {
         const tokenInfo = this.getTokenInfo();
         return tokenInfo?.role || null;

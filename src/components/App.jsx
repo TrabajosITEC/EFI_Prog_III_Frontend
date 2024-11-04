@@ -23,7 +23,7 @@ function App() {
         <Route path="/misCompras" element={<Protected> <MisCompras /> </Protected>} />
         <Route path="/cart" element={<Protected> <Cart /> </Protected>} />
         <Route path="/game/:id" element={<GamePage />} />
-        <Route path="/profile/:id" element={<ProfilePage />} />
+        <Route path="/user/profile" element={<ProfilePage />} />
         <Route path="/about" element={<Protected> <AboutPage /> </Protected>} />
       </Routes>
     </BrowserRouter>
