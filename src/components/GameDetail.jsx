@@ -6,16 +6,13 @@ import {
   TextField
 } from '@mui/material';
 import { authService } from "../services/token";
-import pcImage from '../img/pc.png';
-import nintendoImage from '../img/nintendo.png';
-import xboxImage from '../img/xbox.png';
-import psImage from '../img/pslogo.png';
-import defaultImage from '../img/green.png';
 import { grey, purple } from '@mui/material/colors';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove'
 import { Button } from 'primereact/button';
 import { useParams, useNavigate } from 'react-router-dom';
+
+import { getImageByPlatform } from '../utils/getImageByPlatform';
 
 const API = import.meta.env.VITE_API;
 
@@ -93,21 +90,6 @@ const GameDetail = () => {
       navigate("/cart")
     } catch (error) {
       console.error("Mensaje de error:", error.message || JSON.stringify(error));
-    }
-  };
-
-  const getImageByPlatform = (platform) => {
-    switch (platform.toUpperCase()) {
-      case 'PC':
-        return pcImage;
-      case 'NINTENDO':
-        return nintendoImage;
-      case 'XBOX':
-        return xboxImage;
-      case 'PLAYSTATION':
-        return psImage;
-      default:
-        return defaultImage;
     }
   };
 

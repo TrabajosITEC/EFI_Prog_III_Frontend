@@ -15,6 +15,7 @@ import Divider from '@mui/material/Divider';
 import { useNavigate } from 'react-router-dom';
 import 'remixicon/fonts/remixicon.css';
 import SearchBar from './Search';
+import logoutIcon from '../assets/box-arrow-left.svg'
 
 import { navItems } from '../utils/navItems';
 import { authService } from "../services/token";
@@ -74,14 +75,23 @@ export default function NavBar() {
     };
 
     const list = () => (
-        <List sx={{ bgcolor: purple[800], color: 'white', height: '100%', position: 'relative' }}>
+        <List  sx={{ bgcolor: '#2e2029', width: '300px', color: 'white', height: '100%', position: 'relative' }}>
             {sidebarItems.map((item, index) => (
-                <ListItem key={index} disablePadding>
+                <ListItem className='titles' key={index} disablePadding>
                     <ListItemButton onClick={item.command}>
                         <ListItemIcon sx={{ color: 'white' }}>
                             {item.icon}
                         </ListItemIcon>
-                        <ListItemText primary={item.label} />
+                        <ListItemText 
+                            primary={item.label} 
+                            primaryTypographyProps={{
+                                style: { 
+                                    fontFamily: 'Montserrat, sans-serif',
+                                    fontSize: '16px',
+                                    color: 'white',
+                                },
+                            }} 
+                        />
                     </ListItemButton>
                 </ListItem>
             ))}
@@ -99,12 +109,13 @@ export default function NavBar() {
                     py: 2,
                 }}
             >
-                <ListItemText primary={userName} sx={{ textAlign: 'center', color: 'white' }} />
+                
                 <Button
                     onClick={handleLogout}
-                    sx={{ mt: 1, color: 'red' }}
+                    sx={{ mt: 1, color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', }}
+                    
                 >
-                    Cerrar sesión
+                    <img src={logoutIcon} style={{filter: 'invert(1)'}} alt="logout" /><p className='titles m-0 ms-2'>Cerrar Sesión</p>
                 </Button>
             </ListItem>
         </List>
@@ -169,17 +180,17 @@ export default function NavBar() {
                         </Button>
                     ) : (
                         <Button
+                            variant='outlined'
                             onClick={() => navigate("/login")}
                             sx={{
                                 maxHeight: '47px',
                                 color: 'white',
                                 textTransform: 'uppercase',
-                                bgcolor: purple[800],
                                 opacity: 0.8,
                                 borderRadius: 1,
                                 mr: 1,
                                 '&:hover': {
-                                    bgcolor: purple[600],
+                                    bgcolor: purple['#382331f2'],
                                     color: 'white',
                                     opacity: 1,
                                 },

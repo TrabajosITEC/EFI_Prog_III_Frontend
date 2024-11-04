@@ -19,7 +19,6 @@ export const MainLayOut = ({ children }) => {
           display: 'flex',
           flexDirection: 'column',
           paddingBottom: '200px',
-          paddingTop: '100px'
         }}
       >
         {children}

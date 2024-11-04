@@ -6,6 +6,8 @@ import { MainLayOut } from '../layouts/Mainlayout';
 import { authService } from '../services/token';
 import {  useNavigate } from 'react-router-dom';
 
+import photoEmptyCart from '../assets/day2-gaming-console-Photoroom.png';
+
 const API = import.meta.env.VITE_API;
 export default function Cart(){
     const [cart,setCart] = useState();
@@ -190,76 +192,85 @@ export default function Cart(){
           setTotalCart(result)
         };
 
-    return(
-        <MainLayOut>
-            <div className="flex row">
-                {
-                 cart?.CartItems?.length === 0 || CartStatus === false ?
-                 <div className="col-8 mt-0">
-                     <h2>Carrito Vacio</h2>
-                 </div>
-                :
-                <ul className="col-8 mt-0">
-                {
-                cart?.CartItems?.map(product => (
-               
-                <li key={product.id} className="list-none mb-2">
-                    <Card title={product.Game.title}
-                    subTitle={'Precio unitario: $' + numeral(product.Game.price).format('0,0.00')}
-                    >
-                        <div className="grid align-items-center">
-                            <div className="col-3 flex align-items-center gap-3">
-                                <Button
-                                    icon="pi pi-minus"
-                                    className="p-button-outlined p-button-rounded"
-                                    onClick={product.quantity > 1 ? () => disminuirCarrito(product.id): ""}
-                                ></Button>
-                                <span className="font-light text-2xl w-2rem text-center">{product.quantity}</span>
-                                <Button
-                                    icon="pi pi-plus"
-                                    className="p-button-outlined p-button-rounded p-button-success"
-                                    onClick={()=>incrementarCarrito(product.id)}
-                                ></Button>
-                            </div>
-                            <div className="col-6">
-                            <p className="text-l text-center w-8rem">Subtotal pesos: {numeral(product.quantity * product.Game.price).format('$0,0.00')}</p>
-                            </div>
-                            <div className="col-2 flex justify-content-end">
-                                <Button 
-                                    label="Eliminar"
-                                    icon="pi pi-trash" 
-                                    severity="danger" 
-                                    className="bg-red-500" 
-                                    onClick={()=>eliminarItemCarrito(product.id)}
-                                ></Button>
-                            </div>
-                        </div>
-                    </Card>
-                </li>
-                ))}
-            </ul>
-                }
-
-
-                <div className="col-4">
-                    <Card title={'Resumen de Compra'}>
-                        <div className="grid ">
-                            <div className="col-7">
-                                <p className="font-bold">Productos comprados: {cart?.CartItems?.length || 0}</p>
-                                <p className="font-bold">Total Pesos: {numeral(totalCart).format('$0,0.00')}</p>
-                            </div>
-                            <div className="col-5 pt-2">
-                            <Button style={{marginBottom:"10px"}}
-                                label="Comprar"
-                                raised size="normal"
-                                onClick={()=>finalizarCompraCarrito()}
-                                disabled={ cart?.CartItems?.length === 0 ||  CartStatus === false ? true:false}
-                            />
-                            </div>
-                        </div>
-                    </Card>
-                </div>
+  return (
+    <MainLayOut>
+      <div className="flex row p-4">
+        {
+          cart?.CartItems?.length === 0 || CartStatus === false ? (
+            <div className="col-12 mt-0 flex-column d-flex align-items-center justify-content-center">
+              <div>
+                <img className='m-0 p-0' src={photoEmptyCart} alt="" style={{ width: '550px', height: '600px', maxWidth: '100%' }} />
+              </div>
+              <div>
+                <h4 className='text-white titles'><br />El carrito<br /> <b>está vacío.</b></h4>
+              </div>
             </div>
-        </MainLayOut>
-    )
-}
+          ) : (
+            <>
+              <ul className="col-8" style={{marginTop: '100px'}}>
+                {
+                  cart?.CartItems?.map(product => (
+                    <li key={product.id} className="list-none mb-2">
+                      <Card className='text-white titles' style={{backgroundColor: 'rgba(0, 0, 0, 0.7)'}} title={product.Game.title}
+                        subTitle={'Precio: ARS$ ' + numeral(product.Game.price).format('0,0.00')}>
+                        <div className="grid align-items-center">
+                          <div className="col-3 d-flex align-items-center gap-3">
+                            <Button
+                              style={{height: '30px', width: '100px'}}
+                              label='Agregar'
+                              className="p-2 p-button-outlined p-button-rounded"
+                              onClick={() => incrementarCarrito(product.id)}
+                            />
+                            <span className="font-light text-2xl text-center">{product.quantity}</span>
+                            <Button
+                              style={{height: '30px', width: '100px'}}
+                              label='Eliminar'
+                              className="p-2 p-button-outlined p-button-rounded"
+                              onClick={product.quantity > 1 ? () => disminuirCarrito(product.id) : ""}
+                            />
+                          </div>
+                          <div className="col-6">
+                            <p className="text-l text-center w-8rem mt-3">Total: ARS$ {(product.quantity * product.Game.price)}</p>
+                          </div>
+                          <div className="col-2 flex justify-content-end">
+                            <Button 
+                              label="Eliminar"
+                              icon="pi pi-trash" 
+                              className='p-button-outlined'
+                              onClick={() => eliminarItemCarrito(product.id)}
+                            />
+                          </div>
+                        </div>
+                      </Card>
+                    </li>
+                  ))}
+              </ul>
+              {cart?.CartItems?.length > 0 && (
+                <div className="col-4" style={{marginTop: '100px'}}>
+                  <Card className='titles text-white' title={'Resumen de Compra'} style={{backgroundColor: 'rgba(0, 0, 0, 0.7)'}}>
+                    <div className="d-flex mx-auto grid mb-1">
+                      <div className="col-7">
+                        <p>Productos comprados: {cart?.CartItems?.length || 0}</p>
+                        <p>Total: {numeral(totalCart).format('$0,0.00')}</p>
+                      </div>
+                      <div className="col-5 pt-2">
+                        <Button style={{ marginBottom: "10px" }}
+                          label="Finalizar compra"
+                          raised size="normal"
+                          className='p-button-outlined'
+                          onClick={() => finalizarCompraCarrito()}
+                          disabled={cart?.CartItems?.length === 0 || CartStatus === false ? true : false}
+                        />
+                      </div>
+                    </div>
+                  </Card>
+                </div>
+              )}
+            </>
+          )
+        }
+      </div>
+    </MainLayOut>
+  );
+  
+};

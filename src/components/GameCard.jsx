@@ -6,12 +6,13 @@ import { useNavigate } from 'react-router-dom';
 
 import '../styles/GameCard.css';
 
-const GameCard = ({ id, title, price, image, platform }) => {
+const GameCard = ({ id, title, genre, price, image, platform }) => {
   const navigate = useNavigate();
 
   return (
     <Card
       title={<h4 className='header-card-title'><b>{title}</b></h4>}
+      subTitle={<h4 className='header-card-title' style={{fontSize: '20px'}}><b>{genre}</b></h4>}
       style={{
         width: '242px',
         margin: '1rem',
@@ -24,15 +25,16 @@ const GameCard = ({ id, title, price, image, platform }) => {
       footer={<Button label="Buy Now" icon="pi pi-shopping-cart" onClick={() => navigate(`/game/${id}`)} className='bg-purple-800 border-none d-flex mx-auto' />}
       header={image ? (
         <img
+          className='game-img'
           alt={platform}
           src={image}
-          style={{ width: '100%', height: '180px', objectFit: 'fill' }}
+          style={{ width: '100%', padding: '20px', height: '180px', objectFit: 'fill' }}
         />
       ) : null}
       className="hover:scale-105 titles"
     >
       <hr />
-      <p><b>ARS</b> ${price}</p>
+      <p><b>ARS$ </b>{price}</p>
     </Card>
   );
 };
