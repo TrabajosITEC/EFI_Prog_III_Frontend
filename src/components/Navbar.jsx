@@ -51,19 +51,25 @@ export default function NavBar() {
 
     const handleMoveSideBar = (route) => {
         navigate(`${route}`)
-        window.scrollTo(20,20)
-      }
+        setTimeout(() => {
+            window.scrollTo(20, 20);
+        }, 0);
+    }
 
-      const handleMove = (route, param=undefined) => {
+    const handleMove = (route, param = undefined) => {
         navigate(`${route}`, param)
-        window.scrollTo(900,900)
-      }
+        setTimeout(() => {
+            window.scrollTo(900, 900);
+        }, 0);
+    }
 
-      const handleMoveHome = (route, param=undefined) => {
+    const handleMoveHome = (route, param = undefined) => {
         navigate(`${route}`, param)
-        window.scrollTo(0,0)
-      }
-     
+        setTimeout(() => {
+            window.scrollTo(0, 0);
+        }, 0);
+    }
+
 
     const sidebarItems = [
         {
@@ -91,22 +97,22 @@ export default function NavBar() {
     };
 
     const list = () => (
-        <List  sx={{ bgcolor: '#2e2029', width: '300px', color: 'white', height: '100%', position: 'relative' }}>
+        <List sx={{ bgcolor: '#2e2029', width: '300px', color: 'white', height: '100%', position: 'relative' }}>
             {sidebarItems.map((item, index) => (
                 <ListItem className='titles' key={index} disablePadding>
                     <ListItemButton onClick={item.command}>
                         <ListItemIcon sx={{ color: 'white' }}>
                             {item.icon}
                         </ListItemIcon>
-                        <ListItemText 
-                            primary={item.label} 
+                        <ListItemText
+                            primary={item.label}
                             primaryTypographyProps={{
-                                style: { 
+                                style: {
                                     fontFamily: 'Montserrat, sans-serif',
                                     fontSize: '16px',
                                     color: 'white',
                                 },
-                            }} 
+                            }}
                         />
                     </ListItemButton>
                 </ListItem>
@@ -125,13 +131,13 @@ export default function NavBar() {
                     py: 2,
                 }}
             >
-                
+
                 <Button
                     onClick={handleLogout}
                     sx={{ mt: 1, color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', }}
-                    
+
                 >
-                    <img src={logoutIcon} style={{filter: 'invert(1)'}} alt="logout" /><p className='titles m-0 ms-2'>Cerrar Sesión</p>
+                    <img src={logoutIcon} style={{ filter: 'invert(1)' }} alt="logout" /><p className='titles m-0 ms-2'>Cerrar Sesión</p>
                 </Button>
             </ListItem>
         </List>

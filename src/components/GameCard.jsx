@@ -11,14 +11,16 @@ const GameCard = ({ id, title, genre, price, image, platform }) => {
 
   const handlePagina = (id) => {
     navigate(`/game/${id}`)
-    window.scrollTo(0,0)
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 0);
   }
 
 
   return (
     <Card
       title={<h4 className='header-card-title'><b>{title}</b></h4>}
-      subTitle={<h4 className='header-card-title' style={{fontSize: '20px'}}><b>{genre}</b></h4>}
+      subTitle={<h4 className='header-card-title' style={{ fontSize: '20px' }}><b>{genre}</b></h4>}
       style={{
         width: '242px',
         margin: '1rem',
