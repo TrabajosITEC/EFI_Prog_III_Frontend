@@ -106,19 +106,20 @@ const Reviews = () => {
     <Box className='mt-5' sx={{ maxWidth: '600px', width: '100%', margin: '0 auto' }}>
       {reviews.map((review) => (
         <Paper key={review.id} elevation={3} sx={{ padding: 2, marginBottom: 2, backgroundColor: grey[800], border: `2px solid ${purple[800]}` }}>
-          <Typography variant="body1" sx={{ color: 'white' }}>
+          <Typography variant="body1" sx={{ color: 'white', fontFamily: 'Montserrat, sans-serif' }}>
             <strong>{review.User ? review.User.userName : 'Anonymous'}</strong>
           </Typography>
           <Rating value={review.rating} readOnly />
-          <Typography variant="body2" className='font-italic' sx={{ color: 'white' }}>{review.comment}</Typography>
+          <Typography variant="body2" className='font-italic' sx={{ color: 'white', fontFamily: 'Montserrat, sans-serif' }}>{review.comment}</Typography>
           {(userRole === 'admin' || review.user_id === userId) && (
             <Button
+              style={{ textTransform: 'none' }}
               variant="contained"
               color="error"
               className='mt-2'
               onClick={() => handleDeleteReview(review.id)}
             >
-              Delete
+              Borrar comentario
             </Button>
           )}
         </Paper>
@@ -126,28 +127,38 @@ const Reviews = () => {
 
       {isAuthenticated && (
         <Paper elevation={3} sx={{ padding: 2, marginTop: 2 }}>
-          <Typography variant="h6">Add a Review</Typography>
+          <Typography variant="h6" style={{ fontFamily: 'Montserrat, sans-serif' }}>Add a Review</Typography>
           <Rating
             value={rating}
             onChange={(e, newValue) => setRating(newValue)}
             sx={{ marginBottom: 2 }}
           />
           <TextField
+            style={{ fontFamily: 'Montserrat, sans-serif' }}
             multiline
             rows={3}
             variant="outlined"
             fullWidth
             value={comment}
             onChange={(e) => setComment(e.target.value)}
-            placeholder="Add your comment here"
+            placeholder="Escribe una reseña..."
           />
           <Button
-            variant="contained"
+            variant="outlined"
             color="primary"
             onClick={handleSubmitReview}
-            sx={{ marginTop: 2 }}
+            sx={{ marginTop: 2,
+              fontFamily: 'Montserrat, sans-serif',
+              textTransform: 'none',
+              '&:hover': {
+                  bgcolor: purple['#382331f2'],
+                  color: purple['#382331f2'],
+                  opacity: 1,
+              }
+
+            }}
           >
-            Submit Review
+            Publicar reseña
           </Button>
         </Paper>
       )}

@@ -93,7 +93,7 @@ export function PurchasesComponent() {
           <TableBody>
             {products.map((product, index) => (
               <TableRow key={index}>
-                <TableCell style={{ color: 'white', fontFamily: 'Montserrat, sans-serif' }}>{product.date}</TableCell>
+                <TableCell style={{ color: 'white', fontFamily: 'Montserrat, sans-serif' }}>{new Date(product.date).toISOString().split('T')[0]}</TableCell>
                 <TableCell style={{ color: 'white', fontFamily: 'Montserrat, sans-serif' }}>{product.title}</TableCell>
                 <TableCell style={{ color: 'white', fontFamily: 'Montserrat, sans-serif' }}>{formatCurrency(product.price)}</TableCell>
                 <TableCell style={{ color: 'white', fontFamily: 'Montserrat, sans-serif' }}>{product.quantity}</TableCell>
@@ -102,7 +102,7 @@ export function PurchasesComponent() {
           </TableBody>
         </Table>
         <Box p={2} textAlign="center" style={{ color: 'white' }}>
-          Compras realizadas: {products.length}
+          {products.length === 0 ? 'No has comprado nada todavía.' : `Compras realizadas: ${products.length}`}
         </Box>
       </TableContainer>
     </Grid>

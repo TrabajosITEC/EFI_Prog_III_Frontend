@@ -207,11 +207,11 @@ export default function Cart(){
             </div>
           ) : (
             <>
-              <ul className="col-8" style={{marginTop: '100px'}}>
+              <ul className="col-8 d-flex flex-column" style={{marginTop: '100px'}}>
                 {
                   cart?.CartItems?.map(product => (
-                    <li key={product.id} className="list-none mb-2">
-                      <Card className='text-white titles' style={{backgroundColor: 'rgba(0, 0, 0, 0.7)'}} title={product.Game.title}
+                    <li key={product.id} className="list-none mb-2 d-flex align-items-stretch">
+                      <Card className='text-white titles w-100' style={{backgroundColor: 'rgba(0, 0, 0, 0.7)'}} title={product.Game.title}
                         subTitle={'Precio: ARS$ ' + numeral(product.Game.price).format('0,0.00')}>
                         <div className="grid align-items-center">
                           <div className="col-3 d-flex align-items-center gap-3">
@@ -250,7 +250,7 @@ export default function Cart(){
               </ul>
               {cart?.CartItems?.length > 0 && (
                 <div className="col-4" style={{marginTop: '100px'}}>
-                  <Card className='titles text-white' title={'Resumen de Compra'} style={{backgroundColor: 'rgba(0, 0, 0, 0.7)'}}>
+                  <Card className='titles text-white pb-3' title={'Resumen de Compra'} style={{backgroundColor: 'rgba(0, 0, 0, 0.7)'}}>
                     <div className="d-flex mx-auto grid mb-1">
                       <div className="col-7">
                         <p>Productos comprados: {cart?.CartItems?.length || 0}</p>

@@ -10,9 +10,44 @@
 
 }
 
-.body-color{
-  background: #FF0099; 
-  background: -webkit-linear-gradient(to right, #2e2029, #cf077f);  
-  background: linear-gradient(to right, #2e2029, #cf077f); 
+body::before {
+  content: "";
+  position: fixed;
+  background-image: linear-gradient(
+    45deg,
+    hsl(0deg 0% 18%) 0%,
+    hsl(0deg 0% 18%) 26%,
+    hsl(324, 84%, 40%) 39%,
+    hsl(319, 79%, 43%) 50%,
+    hsl(324, 84%, 40%) 61%,
+    hsl(320, 38%, 15%) 74%,
+    hsl(328, 41%, 18%) 100%
 
+  );
+
+  background-size: 200%;
+  animation: bg-animation 30s infinite alternate; 
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 100vh;
+  z-index: -1;
+}
+
+@keyframes bg-animation {
+  0% {
+    background-position: left; /* Comienza desde la izquierda */
+  }
+  20% {
+    background-position: 30%; /* Detiene el color oscuro antes de desaparecer */
+  }
+  60% {
+    background-position: right; /* Se mueve hacia la derecha */
+  }
+}
+
+@media (min-width: 1024px) {
+  body::before {
+    background-attachment: fixed; /* Mantiene el fondo fijo en pantallas grandes */
+  }
 }

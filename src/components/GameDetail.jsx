@@ -12,7 +12,10 @@ import RemoveIcon from '@mui/icons-material/Remove'
 import { Button } from 'primereact/button';
 import { useParams, useNavigate } from 'react-router-dom';
 
+import { capitalizeFirstLetter } from '../utils/capitalizeFirstLetter';
 import { getImageByPlatform } from '../utils/getImageByPlatform';
+
+import '../styles/GameDetail.css'
 
 const API = import.meta.env.VITE_API;
 
@@ -73,7 +76,7 @@ const GameDetail = () => {
 
     if (!token) {
       navigate("/login")
-      console.log("Estoy en el if sin loguearme")
+      
     }
 
     try {
@@ -105,6 +108,7 @@ const GameDetail = () => {
 
   return (
     <Grid
+      className='custom-margin main-font'
       container
       justifyContent="center"
       alignItems="center"
@@ -115,7 +119,7 @@ const GameDetail = () => {
         margin: '0 auto',
         borderRadius: '16px',
         border: `2px solid ${purple[800]}`,
-        backgroundColor: grey[800]
+        backgroundColor: 'rgba(0, 0, 0, 0.7)',
       }}
     >
       <Grid item xs={12} sm={6} md={4} style={{ marginRight: '2rem' }}>
@@ -123,7 +127,9 @@ const GameDetail = () => {
           src={getImageByPlatform(game.platform)}
           alt={`${game.platform}`}
           style={{
-            width: '100%',
+            filter: 'invert(1)',
+            marginRight: '40px',
+            width: '200px',
             height: '100%',
             maxWidth: '400px',
             maxHeight: '400px',
@@ -132,38 +138,38 @@ const GameDetail = () => {
         />
       </Grid>
       <Grid item xs={12} sm={6} md={8}>
-        <Typography variant="h3" color="white" className='font-bold underline'>{game.title}</Typography>
+        <Typography style={{ fontFamily: 'Montserrat, sans-serif' }} variant="h3" color="white">{game.title}</Typography>
 
-        <Typography variant="h6" className='font-bold' style={{ marginTop: '1rem', color: purple[600], textDecoration: '' }}>
-          Genre:
+        <Typography variant="h6" className='font-bold ' style={{ marginTop: '1rem', color: purple[600], textDecoration: '', fontFamily: 'Montserrat, sans-serif' }}>
+          Género:
         </Typography>
-        <Typography variant="body1" style={{ color: 'white', marginBottom: '1rem' }}>
+        <Typography variant="body1" style={{ color: 'white', marginBottom: '1rem', fontFamily: 'Montserrat, sans-serif' }}>
           {game.genre}
         </Typography>
 
-        <Typography variant="h6" className='font-bold' style={{ marginTop: '1rem', color: purple[600] }}>
-          Platform:
+        <Typography variant="h6" className='font-bold' style={{ marginTop: '1rem', color: purple[600], fontFamily: 'Montserrat, sans-serif' }}>
+          Plataforma:
         </Typography>
-        <Typography variant="body1" style={{ color: 'white', marginBottom: '1rem' }}>
-          {game.platform}
-        </Typography>
-
-        <Typography variant="h6" className='font-bold' style={{ marginTop: '1rem', color: purple[600] }}>
-          Price:
-        </Typography>
-        <Typography variant="body1" style={{ color: 'white', marginBottom: '1rem' }}>
-          ${game.price.toFixed(2)}
+        <Typography variant="body1" style={{ color: 'white', marginBottom: '1rem', fontFamily: 'Montserrat, sans-serif' }}>
+          {capitalizeFirstLetter(game.platform.toLowerCase())}
         </Typography>
 
-        <Typography variant="h6" className='font-bold' style={{ marginTop: '1rem', color: purple[600] }}>
-          Status:
+        <Typography variant="h6" className='font-bold' style={{ marginTop: '1rem', color: purple[600], fontFamily: 'Montserrat, sans-serif' }}>
+          Precio:
         </Typography>
-        <Typography variant="body1" style={{ color: game.available ? 'white' : 'red', marginBottom: '1rem' }}>
+        <Typography variant="body1" style={{ color: 'white', marginBottom: '1rem', fontFamily: 'Montserrat, sans-serif' }}>
+          ARS$ {game.price.toFixed(2)}
+        </Typography>
+
+        <Typography variant="h6" className='font-bold' style={{ marginTop: '1rem', color: purple[600], fontFamily: 'Montserrat, sans-serif' }}>
+          Estado:
+        </Typography>
+        <Typography variant="body1" style={{ color: game.available ? 'white' : 'red', marginBottom: '1rem', fontFamily: 'Montserrat, sans-serif' }}>
           {game.available ? 'In Stock' : 'Out of Stock'}
         </Typography>
         <div style={{ display: 'flex', alignItems: 'center', marginTop: '1rem' }}>
           <IconButton onClick={handleDecrement} color="primary" disabled={!game.available}>
-            <RemoveIcon style={{ color: purple[600] }} />
+            <RemoveIcon style={{ color: purple[600], marginTop: '20px' }} />
           </IconButton>
           <TextField
             type="number"
@@ -171,7 +177,7 @@ const GameDetail = () => {
             variant="outlined"
             disabled={!game.available}
             onChange={handleQuantityChange}
-            style={{ borderRadius: '16px' }}
+            style={{ borderRadius: '16px', marginTop: '20px' }}
             sx={{
               width: '100px',
               textAlign: 'center',
@@ -200,11 +206,17 @@ const GameDetail = () => {
           />
 
           <IconButton onClick={handleIncrement} color="primary" disabled={!game.available}>
-            <AddIcon style={{ color: purple[600] }} />
+            <AddIcon style={{ color: purple[600], marginTop: '20px' }} />
           </IconButton>
         </div>
-        <Button label="Add to Cart" icon="pi pi-shopping-cart"
-          onClick={() => handleAddToCart()} disabled={!game.available} className='bg-purple-800 mt-2 border-none' />
+        <Button 
+          style={{ backgroundColor: 'rgba(0, 0, 0, 0.7)', border: '2px solid purple' }} 
+          label="Agregar al carrito" 
+          icon="pi pi-shopping-cart"
+          onClick={() => handleAddToCart()} 
+          disabled={!game.available} 
+          className='mt-5' 
+        />
       </Grid>
     </Grid>
   );
