@@ -79,9 +79,6 @@ export default function FormRegister({ isVisible }) {
                                 const userData = await response.json();
                                 console.log("Registro exitoso. Datos del usuario:", userData);
 
-                                // Navegar a la página de inicio con los datos del usuario
-                                setUserActive(userData.username)
-                                // navigate("/", { state: { userActive } });
                                 try {
                                     console.log("Intentando registrar con los valores:", values);
     

@@ -217,24 +217,27 @@ export default function Cart(){
                           <div className="col-3 d-flex align-items-center gap-3">
                             <Button
                               style={{height: '30px', width: '100px'}}
-                              label='Agregar'
-                              className="p-2 p-button-outlined p-button-rounded"
-                              onClick={() => incrementarCarrito(product.id)}
-                            />
-                            <span className="font-light text-2xl text-center">{product.quantity}</span>
-                            <Button
-                              style={{height: '30px', width: '100px'}}
                               label='Eliminar'
                               className="p-2 p-button-outlined p-button-rounded"
                               onClick={product.quantity > 1 ? () => disminuirCarrito(product.id) : ""}
                             />
+                            <span className="font-light text-2xl text-center">{product.quantity}</span> 
+                            <Button
+                              style={{height: '30px', width: '100px'}}
+                              label='Agregar'
+                              className="p-2 p-button-outlined p-button-rounded"
+                              onClick={() => incrementarCarrito(product.id)}
+                            />
+                            
+                       
                           </div>
                           <div className="col-6">
-                            <p className="text-l text-center w-8rem mt-3">Total: ARS$ {(product.quantity * product.Game.price)}</p>
+                          
+                            <p className="text-l text-center w-10rem mt-3">Total: {numeral(product.quantity * product.Game.price).format("$0,0.00")}</p>
                           </div>
                           <div className="col-2 flex justify-content-end">
                             <Button 
-                              label="Eliminar"
+                              label="Eliminar Juego"
                               icon="pi pi-trash" 
                               className='p-button-outlined'
                               onClick={() => eliminarItemCarrito(product.id)}
