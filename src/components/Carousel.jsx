@@ -1,9 +1,8 @@
-import { Carousel } from 'primereact/carousel';
 import { Galleria } from 'primereact/galleria';
 
 import { carouselImages } from '../utils/carouselImages';
 
-import './Carousel.css';
+import '../styles/Carousel.css';
 
 const CarouselComponent = () => {
   const itemTemplate = (item) => {
