@@ -49,21 +49,37 @@ export default function NavBar() {
         navigate(`/game/${game.id}`);
     };
 
+    const handleMoveSideBar = (route) => {
+        navigate(`${route}`)
+        window.scrollTo(20,20)
+      }
+
+      const handleMove = (route, param=undefined) => {
+        navigate(`${route}`, param)
+        window.scrollTo(900,900)
+      }
+
+      const handleMoveHome = (route, param=undefined) => {
+        navigate(`${route}`, param)
+        window.scrollTo(0,0)
+      }
+     
+
     const sidebarItems = [
         {
             label: 'Carrito',
             icon: <ShoppingCartIcon />,
-            command: () => navigate("/cart"),
+            command: () => handleMoveSideBar("/cart"),
         },
         {
             label: 'Mis Compras',
             icon: <ListIcon />,
-            command: () => navigate("/myPurchases"),
+            command: () => handleMoveSideBar("/myPurchases"),
         },
         {
             label: 'Mi Perfil',
             icon: <AccountCircleIcon />,
-            command: () => navigate(`/user/profile`),
+            command: () => handleMoveSideBar(`/user/profile`),
         },
     ];
 
@@ -130,12 +146,12 @@ export default function NavBar() {
 
                 console.log(filteredGames);
 
-                navigate("/", { state: { filteredGames } });
+                handleMoveHome("/", { state: { filteredGames } });
 
             } else {
                 const filteredGames = games.filter(game => game.platform === label);
 
-                navigate("/", { state: { filteredGames } });
+                handleMove("/", { state: { filteredGames } });
 
             };
 
