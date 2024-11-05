@@ -5,7 +5,7 @@ import { authService } from "../services/token";
 
 const API = import.meta.env.VITE_API;
 
-export default function Tabla() {
+export function PurchasesComponent() {
   const [products, setProducts] = useState([]);
   const UserId = authService.getUserId();
 
@@ -68,34 +68,35 @@ export default function Tabla() {
       <TableContainer
         component={Paper}
         style={{
+          minHeight: 500,
           maxWidth: 1000,
-          backgroundColor: grey[800],
+          backgroundColor: 'rgba(0, 0, 0, 0.7)',
           borderRadius: 8,
           border: `2px solid ${purple[800]}`,
           overflow: 'hidden',
         }}
       >
         <Box p={2}>
-          <Typography variant="h5" align="center" style={{ color: 'white', fontWeight: 'bold' }}>
+          <Typography className='text-white ' variant="h5" align="center" sx={{ fontFamily: 'Montserrat, sans-serif', fontWeight: 'bold' }}>
             Mis Compras
           </Typography>
         </Box>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell style={{ color: 'white', fontWeight: 'bold' }}>Fecha</TableCell>
-              <TableCell style={{ color: 'white', fontWeight: 'bold' }}>Producto</TableCell>
-              <TableCell style={{ color: 'white', fontWeight: 'bold' }}>Precio</TableCell>
-              <TableCell style={{ color: 'white', fontWeight: 'bold' }}>Cantidad</TableCell>
+              <TableCell style={{ color: 'white', fontWeight: 'bold', fontFamily: 'Montserrat, sans-serif' }}>Fecha</TableCell>
+              <TableCell style={{ color: 'white', fontWeight: 'bold', fontFamily: 'Montserrat, sans-serif' }}>Producto</TableCell>
+              <TableCell style={{ color: 'white', fontWeight: 'bold', fontFamily: 'Montserrat, sans-serif' }}>Precio</TableCell>
+              <TableCell style={{ color: 'white', fontWeight: 'bold', fontFamily: 'Montserrat, sans-serif' }}>Cantidad</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {products.map((product, index) => (
               <TableRow key={index}>
-                <TableCell style={{ color: 'white' }}>{product.date}</TableCell>
-                <TableCell style={{ color: 'white' }}>{product.title}</TableCell>
-                <TableCell style={{ color: 'white' }}>{formatCurrency(product.price)}</TableCell>
-                <TableCell style={{ color: 'white' }}>{product.quantity}</TableCell>
+                <TableCell style={{ color: 'white', fontFamily: 'Montserrat, sans-serif' }}>{product.date}</TableCell>
+                <TableCell style={{ color: 'white', fontFamily: 'Montserrat, sans-serif' }}>{product.title}</TableCell>
+                <TableCell style={{ color: 'white', fontFamily: 'Montserrat, sans-serif' }}>{formatCurrency(product.price)}</TableCell>
+                <TableCell style={{ color: 'white', fontFamily: 'Montserrat, sans-serif' }}>{product.quantity}</TableCell>
               </TableRow>
             ))}
           </TableBody>

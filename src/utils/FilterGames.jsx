@@ -37,7 +37,7 @@ export const FilterGamesBy = ({ attr, value, title }) => {
       <h4 className="text-left text-white titles" style={{ marginTop: '120px' }}>{title}</h4>
 
       <Grid container spacing={2} sx={{ marginTop: '20px', justifyContent: 'center', backgroundColor: 'rgba(0, 0, 0, 0.8)' }}>
-        {games.map((game) => (
+        {games.slice(0, 3).map((game) => (
           <Grid item xs={12} sm={6} md={3} key={game.id}>
             <GameCard 
               id={game.id}

@@ -48,6 +48,8 @@ export default function Home() {
       <FilterGamesBy attr={'price'} value={'200'} title={'A menos de ARS$ 200'} />
     
       <FilterGamesBy attr={'genre'} value={'Sports'} title={'Basados en deportes'} />
+
+      <FilterGamesBy attr={'genre'} value={'RPG'} title={'Universos RPG por descubrir'} />
         
     </Container>
   );

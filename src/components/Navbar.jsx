@@ -58,7 +58,7 @@ export default function NavBar() {
         {
             label: 'Mis Compras',
             icon: <ListIcon />,
-            command: () => navigate("/misCompras"),
+            command: () => navigate("/myPurchases"),
         },
         {
             label: 'Mi Perfil',

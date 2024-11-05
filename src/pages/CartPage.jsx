@@ -150,7 +150,7 @@ export default function Cart(){
             throw new Error(data.message || JSON.stringify(data));
         }
         
-        navigate("/misCompras")
+        navigate("/myPurchases");
         
         } catch (error) {
         console.error("Mensaje de error:", error.message || JSON.stringify(error));

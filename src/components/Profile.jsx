@@ -5,7 +5,8 @@ import { grey, purple } from '@mui/material/colors';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
 import { Button } from 'primereact/button';
-import profileImage from '../img/profile.png';
+import profileImage from '../assets/person-circle.svg';
+
 const API = import.meta.env.VITE_API;
 
 const Profile = () => {
@@ -40,7 +41,6 @@ const Profile = () => {
         },
         body: JSON.stringify({ name, email })
       });
-      console.log('🚀 ~ handleSave ~ response:', response);
 
       if (!response.ok) {
         const data = await response.json();
@@ -61,60 +61,60 @@ const Profile = () => {
       justifyContent="center"
       alignItems="center"
       style={{
+        fontFamily: 'Montserrat, sans-serif',
         width: '600px',
         padding: '2rem',
-        margin: '0 auto',
+        margin: '200px auto',
         borderRadius: '16px',
         border: `2px solid ${purple[800]}`,
-        backgroundColor: grey[800]
+        backgroundColor: 'rgba(0, 0, 0, 0.7)'
       }}
     >
-      <Grid item xs={12} style={{ marginRight: '2rem' }}>
+      <Grid item xs={12} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <img
           src={profileImage}
           style={{
-            width: '100%',
-            height: '100%',
-            maxWidth: '200px',
-            maxHeight: '200px',
-            objectFit: 'contain'
+            margin: '40px',
+            objectFit: 'contain',
+            width: '100px',
+            height: '100px',
+            filter: 'invert(1)'
           }}
         />
       </Grid>
       <Grid item xs={12} sm={6} md={8}>
-        <Typography variant="h6" className='font-bold' style={{ marginTop: '1rem', color: purple[600] }}>
+        <Typography variant="h6" className='font-bold' style={{ marginTop: '1rem', color: purple[600], fontFamily: 'Montserrat, sans-serif' }}>
           Username:
         </Typography>
-        <Typography variant="body1" style={{ color: 'white', marginBottom: '1rem' }}>
-          {user.name}
+        <Typography variant="body1" style={{ color: 'white', marginBottom: '1rem', fontFamily: 'Montserrat, sans-serif' }}>
+          <p className='mt-2'>{user.name}</p>
         </Typography>
 
-        <Typography variant="h6" className='font-bold' style={{ marginTop: '1rem', color: purple[600] }}>
+        <Typography variant="h6" className='font-bold' style={{ marginTop: '1rem', color: purple[600], fontFamily: 'Montserrat, sans-serif' }}>
           Email:
         </Typography>
-        <Typography variant="body1" style={{ color: 'white', marginBottom: '1rem' }}>
-          {user.email}
+        <Typography variant="body1" style={{ color: 'white', marginBottom: '1rem', fontFamily: 'Montserrat, sans-serif' }}>
+          <p className='mt-2'>{user.email}</p>
         </Typography>
 
         {user.role === 'admin' && (
-
-          <Typography variant="body1" style={{ color: 'red', marginBottom: '1rem' }}>
+          <Typography variant="body1" style={{ color: 'red', marginTop: '2rem', marginBottom: '1rem', fontFamily: 'Montserrat, sans-serif' }}>
             {'Usuario Administrador'}
           </Typography>
-
         )}
 
-        {isEditing ? (
-          <>
+        {isEditing && (
+          <> 
             <TextField
               value={name}
               variant="outlined"
               onChange={(e) => setName(e.target.value)}
-              style={{ borderRadius: '16px', marginTop: '1rem' }}
+              style={{ borderRadius: '16px', marginTop: '1rem', fontFamily: 'Montserrat, sans-serif' }}
               sx={{
-                width: '300px',
+                width: '100%',
                 '& .MuiInputBase-input': {
                   color: 'white',
+                  fontFamily: 'Montserrat, sans-serif',
                 },
                 '& .MuiOutlinedInput-notchedOutline': {
                   borderColor: purple[600],
@@ -125,11 +125,12 @@ const Profile = () => {
               value={email}
               variant="outlined"
               onChange={(e) => setEmail(e.target.value)}
-              style={{ borderRadius: '16px', marginTop: '1rem' }}
+              style={{ borderRadius: '16px', marginTop: '1rem', fontFamily: 'Montserrat, sans-serif' }}
               sx={{
-                width: '300px',
+                width: '100%',
                 '& .MuiInputBase-input': {
                   color: 'white',
+                  fontFamily: 'Montserrat, sans-serif',
                 },
                 '& .MuiOutlinedInput-notchedOutline': {
                   borderColor: purple[600],
@@ -137,16 +138,17 @@ const Profile = () => {
               }}
             />
           </>
-        ) : <></>}
+        )}
 
         <Button
           label={isEditing ? "Save" : "Edit"}
           icon={isEditing ? <SaveIcon /> : <EditIcon />}
           onClick={isEditing ? handleSave : handleEditToggle}
-          className='bg-purple-800 mt-2 border-none'
+          className='p-button-outlined mt-4 w-100'
+          style={{ fontFamily: 'Montserrat, sans-serif' }}
         />
       </Grid>
-    </Grid >
+    </Grid>
   );
 };
 
