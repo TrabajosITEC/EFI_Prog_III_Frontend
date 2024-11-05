@@ -41,12 +41,16 @@ export default function NavBar() {
     const handleLogout = () => {
         authService.removeToken();
         setIsAuthenticated(false);
+        setState({ ...state, right: false });
         navigate("/");
     };
 
     const handleSearch = (game) => {
         console.log("Búsqueda de:", game);
         navigate(`/game/${game.id}`);
+        setTimeout(() => {
+            window.scrollTo(0, 0);
+        }, 0);
     };
 
     const handleMoveSideBar = (route) => {
