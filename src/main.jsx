@@ -1,6 +1,6 @@
-import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import App from '../components/App';
+import App from './components/App';
+import { ModeProvider } from './contexts/MainContext';
 
 import { PrimeReactProvider} from 'primereact/api';
 import 'primeicons/primeicons.css';
@@ -15,8 +15,8 @@ const primeConfig = {
 
 createRoot(document.getElementById('root')).render(
   <PrimeReactProvider value={primeConfig}>
-    <StrictMode>
-      <App/>
-    </StrictMode>
+      <ModeProvider>
+        <App/>
+      </ModeProvider>
   </PrimeReactProvider>
 )

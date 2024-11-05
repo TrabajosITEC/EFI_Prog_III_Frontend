@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+label, a{
+  font-family: "Montserrat", sans-serif;
+
+}
+
+.custom-bg{
+  position: relative;
+
+}
+
+.custom-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('../src/assets/wallhaven-nr2orw.png');
+  background-position: left;
+  background-repeat: no-repeat;
+  background-size: cover;
+  z-index: -1;
+
+}
+
+.custom-login-bg-color{
+  background-color: rgb(20, 20, 20);
+
+}

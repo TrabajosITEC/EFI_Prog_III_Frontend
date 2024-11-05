@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root{
+  --header-card-title: 'Exo 2', sans-serif;
+
+}
+
+.header-card-title{
+  font-family: var(--header-card-title);
+  font-weight: 200;
+  font-style: italic;
+
+}
+
+.game-img{
+  filter: invert(1);
+
+}
