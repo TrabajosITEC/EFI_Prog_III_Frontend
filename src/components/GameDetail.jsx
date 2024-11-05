@@ -76,7 +76,7 @@ const GameDetail = () => {
 
     if (!token) {
       navigate("/login")
-      
+
     }
 
     try {
@@ -97,6 +97,9 @@ const GameDetail = () => {
 
 
       navigate("/cart")
+      setTimeout(() => {
+        window.scrollTo(20, 20);
+      }, 0);
     } catch (error) {
       console.error("Mensaje de error:", error.message || JSON.stringify(error));
     }
@@ -209,13 +212,13 @@ const GameDetail = () => {
             <AddIcon style={{ color: purple[600], marginTop: '20px' }} />
           </IconButton>
         </div>
-        <Button 
-          style={{ backgroundColor: 'rgba(0, 0, 0, 0.7)', border: '2px solid purple' }} 
-          label="Agregar al carrito" 
+        <Button
+          style={{ backgroundColor: 'rgba(0, 0, 0, 0.7)', border: '2px solid purple' }}
+          label="Agregar al carrito"
           icon="pi pi-shopping-cart"
-          onClick={() => handleAddToCart()} 
-          disabled={!game.available} 
-          className='mt-5' 
+          onClick={() => handleAddToCart()}
+          disabled={!game.available}
+          className='mt-5'
         />
       </Grid>
     </Grid>
