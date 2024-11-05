@@ -2,7 +2,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import HomePage from '../pages/HomePage';
 import AboutPage from '../pages/AboutPage';
 import LoginPage from '../pages/LoginPage';
-import MisCompras from '../pages/MisComprasPage';
+import RegisterPage from '../pages/RegisterPage';
+import MyPurchases from '../pages/PurchasesPage';
 import GamePage from '../pages/GamePage';
 import ProfilePage from '../pages/ProfilePage'
 import Protected from './Protected';
@@ -18,7 +19,7 @@ function App() {
       <Routes>
         <Route path="/login" element={<LoginPage />} />  
         <Route path="/" element={<HomePage />} />
-        <Route path="/misCompras" element={<Protected> <MisCompras /> </Protected>} />
+        <Route path="/myPurchases" element={<Protected> <MyPurchases /> </Protected>} />
         <Route path="/cart" element={<Protected> <Cart /> </Protected>} />
         <Route path="/game/:id" element={<GamePage />} />
         <Route path="/user/profile" element={<ProfilePage />} />

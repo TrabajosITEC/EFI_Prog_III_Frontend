@@ -14,7 +14,7 @@ export const navItems = [
   },
   {
     id: 'Playstation',
-    label: 'PLAYSTATION',
+    label: 'Playstation',
     icon: <i className="ri-playstation-line"></i>,
     command: async () => {
       const games = await fetchGames();

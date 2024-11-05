@@ -4,11 +4,9 @@ import { Container, Grid2 as Grid } from "@mui/material";
 import CarouselComponent from "./Carousel";
 import GameCard from "./GameCard";
 import { fetchGames } from "../hooks/fetchGames";
-import pcImage from '../img/pc.png';
-import nintendoImage from '../img/nintendo.png';
-import xboxImage from '../img/xbox.png';
-import psImage from '../img/pslogo.png';
-import defaultImage from '../img/green.png';
+
+import { getImageByPlatform } from '../utils/getImageByPlatform.js'
+import { FilterGamesBy } from "../utils/FilterGames.jsx";
 
 export default function Home() {
   const location = useLocation();
@@ -28,39 +26,31 @@ export default function Home() {
     fetchData();
 
   }, [location.state]);
-
-  const getImageByPlatform = (platform) => {
-    switch (platform.toUpperCase()) {
-      case 'PC':
-        return pcImage;
-      case 'NINTENDO':
-        return nintendoImage;
-      case 'XBOX':
-        return xboxImage;
-      case 'PLAYSTATION':
-        return psImage;
-      default:
-        return defaultImage;
-    }
-  };
-
+  
   return (
     <Container>
       <CarouselComponent />
-      <Grid container spacing={2} sx={{ marginTop: '150px', justifyContent: 'space-between' }}>
+      <Grid container spacing={2} sx={{ marginTop: '150px', justifyContent: 'center' }}>
         {games.slice(0, 4).map((game) => (
           <Grid item='true' xs={12} sm={6} md={4} lg={3} key={game.id}>
             <GameCard
               id={game.id}
               title={game.title}
+              genre={game.genre}
               price={game.price}
-              description={'short game description'}
               image={getImageByPlatform(game.platform)}
               plataform={game.platform}
             />
           </Grid>
         ))}
       </Grid>
+
+      <FilterGamesBy attr={'price'} value={'200'} title={'A menos de ARS$ 200'} />
+    
+      <FilterGamesBy attr={'genre'} value={'Sports'} title={'Basados en deportes'} />
+
+      <FilterGamesBy attr={'genre'} value={'RPG'} title={'Universos RPG por descubrir'} />
+        
     </Container>
   );
 }
