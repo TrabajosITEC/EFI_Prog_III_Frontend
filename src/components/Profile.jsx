@@ -71,16 +71,18 @@ const Profile = () => {
       }}
     >
       <Grid item xs={12} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <img
-          src={profileImage}
-          style={{
-            margin: '40px',
-            objectFit: 'contain',
-            width: '100px',
-            height: '100px',
-            filter: 'invert(1)'
-          }}
-        />
+        <div className='me-3'>
+          <img
+            src={profileImage}
+            style={{
+              margin: '40px',
+              objectFit: 'contain',
+              width: '100px',
+              height: '100px',
+              filter: 'invert(1)'
+            }}
+          />
+        </div>
       </Grid>
       <Grid item xs={12} sm={6} md={8}>
         <Typography variant="h6" className='font-bold' style={{ marginTop: '1rem', color: purple[600], fontFamily: 'Montserrat, sans-serif' }}>
