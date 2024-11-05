@@ -30,7 +30,7 @@ const GameCard = ({ id, title, genre, price, image, platform }) => {
         transition: 'transform 0.2s ease',
       }}
 
-      footer={<Button label="Buy Now" icon="pi pi-shopping-cart" onClick={() => handlePagina(id)} className='bg-purple-800 border-none d-flex mx-auto' />}
+      footer={<Button label="Buy Now" icon="pi pi-shopping-cart" onClick={() => handlePagina(id)} className='d-flex mx-auto header-card-title' style={{ backgroundColor: 'rgba(0, 0, 0, 0.7)' }} />}
       header={image ? (
         <img
           className='game-img'
@@ -42,7 +42,7 @@ const GameCard = ({ id, title, genre, price, image, platform }) => {
       className="hover:scale-105 titles"
     >
       <hr />
-      <p><b>ARS$ </b>{price}</p>
+      <p className='header-card-title'><b>ARS$ </b>{price}</p>
     </Card>
   );
 };

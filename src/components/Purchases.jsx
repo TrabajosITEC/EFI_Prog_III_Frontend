@@ -68,6 +68,7 @@ export function PurchasesComponent() {
       <TableContainer
         component={Paper}
         style={{
+          marginTop: 160,
           minHeight: 500,
           maxWidth: 1000,
           backgroundColor: 'rgba(0, 0, 0, 0.7)',
