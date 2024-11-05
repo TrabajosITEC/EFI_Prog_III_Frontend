@@ -74,6 +74,11 @@ const GameDetail = () => {
     const quantit = quantity
     console.log(userId, gameId, quantit)
 
+    if (!token) {
+      navigate("/login")
+      console.log("Estoy en el if sin loguearme")
+    }
+
     try {
       const response = await fetch(`${API}/cart/add`, {
         method: "POST",
@@ -89,6 +94,7 @@ const GameDetail = () => {
         const data = await response.json();
         throw new Error(data.message || JSON.stringify(data));
       }
+
 
       navigate("/cart")
     } catch (error) {

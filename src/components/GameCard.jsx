@@ -9,6 +9,12 @@ import '../styles/GameCard.css';
 const GameCard = ({ id, title, price, image, platform }) => {
   const navigate = useNavigate();
 
+  const handlePagina = (id) => {
+    navigate(`/game/${id}`)
+    window.scrollTo(0,0)
+  }
+
+
   return (
     <Card
       title={<h4 className='header-card-title'><b>{title}</b></h4>}
@@ -21,7 +27,7 @@ const GameCard = ({ id, title, price, image, platform }) => {
         transition: 'transform 0.2s ease',
       }}
 
-      footer={<Button label="Buy Now" icon="pi pi-shopping-cart" onClick={() => navigate(`/game/${id}`)} className='bg-purple-800 border-none d-flex mx-auto' />}
+      footer={<Button label="Buy Now" icon="pi pi-shopping-cart" onClick={() => handlePagina(id)} className='bg-purple-800 border-none d-flex mx-auto' />}
       header={image ? (
         <img
           alt={platform}

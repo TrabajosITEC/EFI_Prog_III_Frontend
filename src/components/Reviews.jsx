@@ -111,7 +111,7 @@ const Reviews = () => {
           </Typography>
           <Rating value={review.rating} readOnly />
           <Typography variant="body2" className='font-italic' sx={{ color: 'white' }}>{review.comment}</Typography>
-          {userRole === 'admin' && (
+          {(userRole === 'admin' || review.user_id === userId) && (
             <Button
               variant="contained"
               color="error"

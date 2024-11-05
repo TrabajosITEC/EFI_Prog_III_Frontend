@@ -1,21 +1,18 @@
 import { Formik, Form } from 'formik';
-import { useState, useContext } from "react";
+import { useState} from "react";
 import { useNavigate } from 'react-router-dom';
-import { ModeContext } from "../contexts/MainContext";
 import { InputText } from "primereact/inputtext";
-import { Password } from "primereact/password";
 import { Message } from 'primereact/message';
 import { Button } from 'primereact/button';
 import { Card } from 'primereact/card';
 import { Divider } from 'primereact/divider';
 import * as Yup from 'yup';
-
+import { authService } from '../services/token';
 const API = import.meta.env.VITE_API;
 
 export default function FormRegister({ isVisible }) {
 
     const [error, setError] = useState(null);
-    const { userActive, setUserActive } = useContext(ModeContext);
     // eslint-disable-next-line no-unused-vars
     const [status, setStatus] = useState(null);
     const navigate = useNavigate();
@@ -33,18 +30,6 @@ export default function FormRegister({ isVisible }) {
                     return trimmedValue.length >= 3 && trimmedValue.length <= 15;
                 }
             ),
-        // .test(
-        //     'checkUser',
-        //     'El nombre de usuario ya se encuentra registrado',
-        //     function(value) {
-        //         const ListadoUsuarios = usuariosRegistrados.map( usuario => usuario.user);
-        //         if (ListadoUsuarios.includes(value)){
-        //             return false
-        //         } else {
-        //             return true
-        //         }           
-        //     }
-        // ),
         password: Yup.string()
             .matches(
                 /^(?=.*[A-Z])(?=.*\d).{1,8}$/,
@@ -53,18 +38,6 @@ export default function FormRegister({ isVisible }) {
             .required('La contraseña es obligatoria.'),
         email: Yup.string().email('Correo electrónico inválido.')
             .required('El correo electrónico es obligatorio.')
-        // .test(
-        //     'checkMail',
-        //     'El correo electronico esta vinculado a otro usuario',
-        //     function(value) {
-        //         const ListadoUsuarios = usuariosRegistrados.map( usuario => usuario.email);
-        //         if (ListadoUsuarios.includes(value)){
-        //             return false
-        //         } else {
-        //             return true
-        //         }           
-        //     }
-        // ),
     });
 
     return (
@@ -108,7 +81,38 @@ export default function FormRegister({ isVisible }) {
 
                                 // Navegar a la página de inicio con los datos del usuario
                                 setUserActive(userData.username)
-                                navigate("/", { state: { userActive } });
+                                // navigate("/", { state: { userActive } });
+                                try {
+                                    console.log("Intentando registrar con los valores:", values);
+    
+                                    const response = await fetch(`${API}/login`, {
+                                        method: "POST",
+                                        headers: {
+                                            "Content-Type": "application/json",
+                                        },
+                                        body: JSON.stringify(values),
+                                    });
+
+                                    const data = await response.json();
+                                    if (!response.ok) {
+                                        authService.removeToken();
+                                        throw new Error(data);
+                                    }
+                                    
+                                    authService.setToken(data.token)
+
+                                    console.log("Registro exitoso. Datos del usuario:", data);
+                                    navigate("/");
+                                    // navigate("/home",  { state: { userActive : values.username } });
+
+                                } catch (error) {
+                                    console.error("Error de registro:", error);
+                                    setStatus(`Error: ${error.message}`);
+                                    setError(error.message);
+                                } finally {
+                                    setLoading(false);
+                                    setSubmitting(false);
+                                }
                             } catch (error) {
                                 console.error("Error de registro:", error.message);
 
@@ -119,21 +123,6 @@ export default function FormRegister({ isVisible }) {
                             }
                         })();
                     }}
-                // onSubmit={(values, { setSubmitting }) => {
-                //     setLoading(true);
-                //     setTimeout( async () => {
-                //         setLoading(false);
-                //         setSubmitting(false);                
-                //         await fetch(`${API}/user`, { 
-                //             method: "POST",
-                //             headers: {
-                //               "Content-Type": "application/json",
-                //             },
-                //             body: JSON.stringify(values),
-                //           });
-                //         navigate("/home");
-                //     }, 2000);
-                // }}
                 >
                     {({ values, errors, touched, handleChange, handleBlur, isSubmitting, handleSubmit }) => (
                         <Form>

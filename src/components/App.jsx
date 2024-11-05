@@ -2,7 +2,6 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import HomePage from '../pages/HomePage';
 import AboutPage from '../pages/AboutPage';
 import LoginPage from '../pages/LoginPage';
-import RegisterPage from '../pages/RegisterPage';
 import MisCompras from '../pages/MisComprasPage';
 import GamePage from '../pages/GamePage';
 import ProfilePage from '../pages/ProfilePage'
@@ -17,8 +16,7 @@ function App() {
 
     <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/login" element={<LoginPage />} />  
         <Route path="/" element={<HomePage />} />
         <Route path="/misCompras" element={<Protected> <MisCompras /> </Protected>} />
         <Route path="/cart" element={<Protected> <Cart /> </Protected>} />
